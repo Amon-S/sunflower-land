@@ -1,6 +1,6 @@
 import Decimal from "decimal.js-light";
 import { fromWei } from "web3-utils";
-import { GameState, Inventory } from "../types/game";
+import { FLOWERS, GameState, Inventory } from "../types/game";
 
 export const GRID_WIDTH_PX = 42;
 
@@ -94,20 +94,28 @@ export const INITIAL_TREES: GameState["trees"] = {
 
 export const INITIAL_FLOWERS: GameState["flowers"] = {
   0: {
+    name: "White Flower",
     honey: new Decimal(1),
     pollinatedAt: 0,
+    cooldown: FLOWERS()["White Flower"].cooldown,
   },
   1: {
+    name: "White Flower",
     honey: new Decimal(3),
     pollinatedAt: 0,
+    cooldown: FLOWERS()["White Flower"].cooldown,
   },
   2: {
+    name: "White Flower",
     honey: new Decimal(2),
     pollinatedAt: 0,
+    cooldown: FLOWERS()["White Flower"].cooldown,
   },
   3: {
+    name: "Red Flower",
     honey: new Decimal(2),
     pollinatedAt: 0,
+    cooldown:  FLOWERS()["Red Flower"].cooldown,
   },
 };
 
@@ -151,6 +159,7 @@ export const INITIAL_FARM: GameState = {
     Scarecrow: new Decimal(4),
     "Bee Hive": new Decimal(1),
     "Pumpkin Soup": new Decimal(1),
+    Bee: new Decimal(10),
   },
   stock: INITIAL_STOCK,
   trees: INITIAL_TREES,

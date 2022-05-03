@@ -52,13 +52,33 @@ export const EASTER_EGGS: EasterEgg[] = [
   "Yellow Egg",
 ];
 
+export type EasterBunny = "Easter Bunny";
+
+export type FlowerName = "White Flower" | "Red Flower";
+
 export type Flower = {
+  name: FlowerName;
   honey: Decimal;
   //Epoch time in milliseconds
   pollinatedAt: number;
+  cooldown: number;
+  reward?: Reward;
 };
 
-export type EasterBunny = "Easter Bunny";
+export const FLOWERS: () => Record<FlowerName, Flower> = () => ({
+  "White Flower": {
+    name: "White Flower",
+    pollinatedAt: 0,
+    honey: new Decimal(4),
+    cooldown: 60 * 60,
+  },
+  "Red Flower": {
+    name: "Red Flower",
+    pollinatedAt: 0,
+    honey: new Decimal(8),
+    cooldown: 48 * 60 * 60,
+  },
+});
 
 export type InventoryItemName =
   | CropName
@@ -68,7 +88,8 @@ export type InventoryItemName =
   | SkillName
   | EasterEgg
   | EasterBunny
-  | BeeItem;
+  | BeeItem
+  | FlowerName;
 
 export type Inventory = Partial<Record<InventoryItemName, Decimal>>;
 

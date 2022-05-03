@@ -21,7 +21,6 @@ import {
   HoneyAction,
   POLLINATE_ERRORS,
   getRequiredBeeAmount,
-  FLOWER_RECOVERY_SECONDS,
 } from "features/game/events/harvestHoney";
 
 import { getTimeLeft } from "lib/utils/time";
@@ -120,7 +119,7 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
 
     setTouchCount((count) => count + 1);
 
-    // On third shake, chop
+    // On third shake, pollinate
     if (touchCount > 0 && touchCount === HITS - 1) {
       pollinate();
       honeyHarvestAudio.play();
@@ -134,6 +133,7 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
     try {
       gameService.send("flower.pollinated", {
         index: flowerIndex,
+        name: flower.name,
         item: selectedItem,
       });
       setCollecting(true);
@@ -177,8 +177,10 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
     setShowLabel(false);
   };
 
-  const timeLeft = getTimeLeft(flower.pollinatedAt, FLOWER_RECOVERY_SECONDS);
-  const percentage = 100 - (timeLeft / FLOWER_RECOVERY_SECONDS) * 100;
+  const timeLeft = getTimeLeft(flower.pollinatedAt, flower.cooldown);
+  const percentage = 100 - (timeLeft / flower.cooldown) * 100;
+
+  const message = `${flower.name} recovery in: `;
 
   return (
     <div className="relative" style={{ height: "106px" }}>
@@ -267,7 +269,7 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
             <ProgressBar percentage={percentage} seconds={timeLeft} />
           </div>
           <TimeLeftPanel
-            text="Recovers in:"
+            text={message}
             timeLeft={timeLeft}
             showTimeLeft={showStumpTimeLeft}
           />

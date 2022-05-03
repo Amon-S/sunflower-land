@@ -9,7 +9,7 @@ export enum CHOP_ERRORS {
 }
 
 // 2 hours
-export const TREE_RECOVERY_SECONDS = 2 * 60 * 60;
+export const TREE_RECOVERY_SECONDS = 60;
 
 export function canChop(tree: Tree, now: number = Date.now()) {
   return now - tree.choppedAt > TREE_RECOVERY_SECONDS * 1000;

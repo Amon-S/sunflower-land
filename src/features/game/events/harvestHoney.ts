@@ -1,5 +1,13 @@
+import { Action } from "components/ui/Action";
 import Decimal from "decimal.js-light";
-import { Flower, GameState, Inventory, InventoryItemName } from "../types/game";
+import {
+  Flower,
+  FlowerName,
+  GameState,
+  Inventory,
+  InventoryItemName,
+  FLOWERS,
+} from "../types/game";
 
 export enum POLLINATE_ERRORS {
   MISSING_BEE = "No bee",
@@ -8,11 +16,15 @@ export enum POLLINATE_ERRORS {
   STILL_GROWING = "Flower is still growing",
 }
 
-// 24 hours cooldown
-export const FLOWER_RECOVERY_SECONDS = 24 * 60 * 60;
+const FlowerList: FlowerName[] = ["White Flower", "Red Flower"];
+
+const getRandomBeeName = (): FlowerName => {
+  let randomNum = Math.floor(Math.random() * FlowerList.length);
+  return FlowerList[randomNum];
+};
 
 export function canPollinate(flower: Flower, now: number = Date.now()) {
-  return now - flower.pollinatedAt > FLOWER_RECOVERY_SECONDS * 1000;
+  return now - flower.pollinatedAt > FLOWERS()[flower.name].cooldown;
 }
 
 type GetPollinatedAtAtgs = {
@@ -39,6 +51,7 @@ export function getRequiredBeeAmount(inventory: Inventory) {
 
 export type HoneyAction = {
   type: "flower.pollinated";
+  name: FlowerName;
   index: number;
   item: InventoryItemName;
 };
@@ -75,6 +88,7 @@ export function Pollinate({
   }
 
   const honeyAmount = state.inventory.Honey || new Decimal(0);
+  const newBeeName = getRandomBeeName();
 
   return {
     ...state,
@@ -86,12 +100,14 @@ export function Pollinate({
     flowers: {
       ...state.flowers,
       [action.index]: {
+        name: newBeeName,
         pollinatedAt: getPollinatedAt({
           pollinatedAt,
           inventory: state.inventory,
         }),
         // Placeholder, random numbers generated on server side
         honey: new Decimal(3),
+        cooldown: FLOWERS()[newBeeName].cooldown,
       },
     },
   };
