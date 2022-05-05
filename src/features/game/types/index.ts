@@ -29,6 +29,7 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Iron Pickaxe": 304,
   Hammer: 305,
   Rod: 306,
+  Net: 307,
 
   "Sunflower Statue": 401,
   "Potato Statue": 402,
@@ -123,13 +124,17 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Colombian Flag": 842,
 
   //Bees items
-  Bee: 850,
+  Bee: 849,
+  Drone: 850,
   Queen: 851,
   Honey: 852,
-  "Bee Hive": 853,
-  "Bee Box": 854,
-  "Sunflower Cake": 855,
+  Pollen:853,
+  "Bee Hive": 854,
+  "Bee Box": 855,
+  "Sunflower Cake": 856,
 
+  "White Flower": 870,
+  "Red Flower": 871,
   // Special events
   "Egg Basket": 901,
   "Red Egg": 902,

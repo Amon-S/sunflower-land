@@ -11,10 +11,11 @@ import { Button } from "components/ui/Button";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { Context } from "features/game/GameProvider";
 import { addNoise, RandomID } from "lib/images";
+import { CopySvg } from "components/ui/CopyField";
 
 interface Props {
   reward: Reward | null | undefined;
-  fieldIndex: number;
+  flowerIndex: number;
   onCollected: () => void;
 }
 
@@ -23,10 +24,10 @@ function randomIntFromInterval(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-export const CropReward: React.FC<Props> = ({
+export const FlowerReward: React.FC<Props> = ({
   reward,
   onCollected,
-  fieldIndex,
+  flowerIndex,
 }) => {
   const { gameService } = useContext(Context);
   const [opened, setOpened] = useState(false);
@@ -46,7 +47,8 @@ export const CropReward: React.FC<Props> = ({
 
   const open = () => {
     setOpened(true);
-    gameService.send("reward.opened", { fieldIndex });
+    gameService.send("flower.rewarded", { flowerIndex });
+    console.log("Reward flower done")
   };
 
   const close = () => {

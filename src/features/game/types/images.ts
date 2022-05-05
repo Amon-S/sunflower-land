@@ -139,10 +139,13 @@ import easterBunny from "src/assets/nfts/easter/easter_bunny.gif";
 import beehive from "assets/buildings/hive.png";
 import beebox from "assets/buildings/beehive.png";
 import sunflowerCake from "assets/nfts/sunflower_cake.png";
-import bee from "assets/animals/bee.png";
+import pollen from "assets/resources/flower/pollen.png";
 import honey from "assets/resources/honey.png";
-import queen from "assets/animals/queen.png";
+import queen from "assets/animals/bees/queenGif.gif";
 import flower from "assets/resources/flower/flower.png";
+import net from "assets/tools/Net.png";
+import beeGif from "assets/animals/bees/beeGif.gif";
+import drone from "assets/animals/bees/droneGif.gif";
 
 import { InventoryItemName } from "./game";
 import {
@@ -160,6 +163,7 @@ import { CROPS, SEEDS } from "./crops";
 import { RESOURCES } from "./resources";
 import { Section } from "lib/utils/hooks/useScrollIntoView";
 import { SKILL_TREE } from "./skills";
+import { pollinateAudio } from "lib/utils/sfx";
 
 export type ItemDetails = {
   description: string;
@@ -308,9 +312,17 @@ export const ITEM_DETAILS: Items = {
     ...RESOURCES["Honey"],
     image: honey,
   },
+  Pollen: {
+    ...RESOURCES["Pollen"],
+    image: pollen,
+  },
   Bee: {
-    ...BEES["Bee"],
-    image: bee,
+    ...RESOURCES["Bee"],
+    image: beeGif,
+  },
+  Drone: {
+    ...RESOURCES["Drone"],
+    image: drone,
   },
   Queen: {
     ...BEE_ITEMS["Queen"],
@@ -342,7 +354,10 @@ export const ITEM_DETAILS: Items = {
     ...TOOLS["Rod"],
     image: rod,
   },
-
+  Net: {
+    ...TOOLS["Net"],
+    image: net,
+  },
   // NFTs
 
   "Sunflower Statue": {
@@ -719,5 +734,13 @@ export const ITEM_DETAILS: Items = {
   "Bee Box": {
     description: "incarese honey production",
     image: beebox,
+  },
+  "White Flower": {
+    description: "white flower",
+    image: flower,
+  },
+  "Red Flower": {
+    description: "Red flower",
+    image: flower,
   },
 };

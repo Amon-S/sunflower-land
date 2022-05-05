@@ -16,6 +16,7 @@ type Options = {
 export function openReward({ state, action, createdAt = Date.now() }: Options) {
   const field = state.fields[action.fieldIndex];
 
+  console.log("crop reward")  
   if (!field) {
     throw new Error("Field does not exist");
   }

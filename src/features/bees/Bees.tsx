@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Beehive } from "./components/Beehive";
-import { Section } from "lib/utils/hooks/useScrollIntoView";
-import beegif from "assets/buildings/beehive.gif";
+ 
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
 import classNames from "classnames";
 import { Context } from "features/game/GameProvider";
@@ -10,7 +9,7 @@ import { useActor } from "@xstate/react";
 export const Bees: React.FC = () => {
   const { gameService } = useContext(Context);
   const [gameState] = useActor(gameService);
-  const isNotReadOnly = !gameState.matches("readonly");
+ 
   return (
     // Container
     <div

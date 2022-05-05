@@ -2,7 +2,7 @@ import { Decimal } from "decimal.js-light";
 import { GameEvent } from "../events";
 
 import { CropName, SeedName } from "./crops";
-import { CraftableName, BeeItem } from "./craftables";
+import { CraftableName, BeeItem, HiveBee } from "./craftables";
 import { ResourceName } from "./resources";
 import { SkillName } from "./skills";
 
@@ -58,25 +58,37 @@ export type FlowerName = "White Flower" | "Red Flower";
 
 export type Flower = {
   name: FlowerName;
-  honey: Decimal;
+  pollen: Decimal;
   //Epoch time in milliseconds
   pollinatedAt: number;
-  cooldown: number;
+  cooldown?: number;
   reward?: Reward;
+};
+
+export type WorkerBee = {
+  buyPrice: Decimal;
+  ingredients: [{}];
+  harvestSeconds: number;
+  name: CropName;
+  description: string;
+};
+
+export type HiveCell = {
+  worker: HiveBee;
+  taskStart: number;
+  multiplier?: number;
 };
 
 export const FLOWERS: () => Record<FlowerName, Flower> = () => ({
   "White Flower": {
     name: "White Flower",
+    pollen: new Decimal(1),
     pollinatedAt: 0,
-    honey: new Decimal(4),
-    cooldown: 60 * 60,
   },
   "Red Flower": {
     name: "Red Flower",
+    pollen: new Decimal(1),
     pollinatedAt: 0,
-    honey: new Decimal(8),
-    cooldown: 48 * 60 * 60,
   },
 });
 
@@ -101,7 +113,7 @@ export type GameState = {
   id?: number;
   balance: Decimal;
   fields: Record<number, FieldItem>;
-
+  hiveCells: Record<number, HiveCell>;
   trees: Record<number, Tree>;
   stones: Record<number, Rock>;
   iron: Record<number, Rock>;

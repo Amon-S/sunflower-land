@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 
 import close from "assets/icons/close.png";
-import bee from "assets/animals/bee.png";
+import bee from "assets/animals/bees/bee.png";
 import hive from "assets/buildings/Beehive.png";
 
 import { Panel } from "components/ui/Panel";
@@ -11,14 +11,15 @@ import { CraftingItems } from "features/blacksmith/components/CraftingItems";
 import { Rare } from "features/blacksmith/components/Rare";
 import * as Auth from "features/auth/lib/Provider";
 import { useActor } from "@xstate/react";
+import { HoneyProd } from "./HoneyProd";
 
-
+import { WorkerBees } from "./WorkerBees";
 interface Props {
   onClose: () => void;
 }
 
 export const BeeSale: React.FC<Props> = ({ onClose }) => {
-  const [tab, setTab] = useState<"bees" | "buy" | "rare">("bees");
+  const [tab, setTab] = useState<"bees" | "honey" | "rare">("bees");
   const { authService } = useContext(Auth.Context);
   const [authState] = useActor(authService);
 
@@ -29,6 +30,11 @@ export const BeeSale: React.FC<Props> = ({ onClose }) => {
           <Tab isActive={tab === "bees"} onClick={() => setTab("bees")}>
             <img src={bee} className="h-5 mr-2" />
             <span className="text-sm text-shadow">Bees</span>
+          </Tab>
+
+          <Tab isActive={tab === "honey"} onClick={() => setTab("honey")}>
+            <img src={hive} className="h-5 mr-2" />
+            <span className="text-sm text-shadow">Honey</span>
           </Tab>
           <Tab isActive={tab === "rare"} onClick={() => setTab("rare")}>
             <img src={hive} className="h-5 mr-2" />
@@ -47,7 +53,7 @@ export const BeeSale: React.FC<Props> = ({ onClose }) => {
           minHeight: "200px",
         }}
       >
-        {tab === "bees" && <CraftingItems items={BEES} onClose={onClose} />}{" "}
+        {tab === "bees" && <WorkerBees items={BEES} onClose={onClose} />}
         {tab === "rare" && (
           <Rare
             items={BEE_ITEMS}
@@ -56,6 +62,7 @@ export const BeeSale: React.FC<Props> = ({ onClose }) => {
             hasAccess={true}
           />
         )}
+        {tab === "honey" && <HoneyProd />}
       </div>
     </Panel>
   );

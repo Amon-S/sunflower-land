@@ -1,6 +1,6 @@
 import Decimal from "decimal.js-light";
 import { fromWei } from "web3-utils";
-import { FLOWERS, GameState, Inventory } from "../types/game";
+import { GameState, Inventory } from "../types/game";
 
 export const GRID_WIDTH_PX = 42;
 
@@ -20,6 +20,7 @@ export const INITIAL_STOCK: Inventory = {
   Pickaxe: new Decimal(30),
   "Stone Pickaxe": new Decimal(10),
   "Iron Pickaxe": new Decimal(5),
+  Net: new Decimal(20),
 
   // One off items
   "Pumpkin Soup": new Decimal(1),
@@ -27,7 +28,7 @@ export const INITIAL_STOCK: Inventory = {
   "Roasted Cauliflower": new Decimal(1),
 
   //test bee stock
-  Bee: new Decimal(100),
+  Drone: new Decimal(10),
 };
 
 export const INITIAL_FIELDS: GameState["fields"] = {
@@ -69,6 +70,8 @@ export const INITIAL_FIELDS: GameState["fields"] = {
   },
 };
 
+export const INITIAL_CELLS: GameState["hiveCells"] = {};
+
 export const INITIAL_TREES: GameState["trees"] = {
   0: {
     wood: new Decimal(3),
@@ -95,27 +98,23 @@ export const INITIAL_TREES: GameState["trees"] = {
 export const INITIAL_FLOWERS: GameState["flowers"] = {
   0: {
     name: "White Flower",
-    honey: new Decimal(1),
+    pollen: new Decimal(1),
     pollinatedAt: 0,
-    cooldown: FLOWERS()["White Flower"].cooldown,
   },
   1: {
     name: "White Flower",
-    honey: new Decimal(3),
+    pollen: new Decimal(3),
     pollinatedAt: 0,
-    cooldown: FLOWERS()["White Flower"].cooldown,
   },
   2: {
     name: "White Flower",
-    honey: new Decimal(2),
+    pollen: new Decimal(2),
     pollinatedAt: 0,
-    cooldown: FLOWERS()["White Flower"].cooldown,
   },
   3: {
     name: "Red Flower",
-    honey: new Decimal(2),
+    pollen: new Decimal(2),
     pollinatedAt: 0,
-    cooldown:  FLOWERS()["Red Flower"].cooldown,
   },
 };
 
@@ -159,7 +158,10 @@ export const INITIAL_FARM: GameState = {
     Scarecrow: new Decimal(4),
     "Bee Hive": new Decimal(1),
     "Pumpkin Soup": new Decimal(1),
+    Sauerkraut: new Decimal(1),
+    "Roasted Cauliflower": new Decimal(1),
     Bee: new Decimal(10),
+    Pollen: new Decimal(10),
   },
   stock: INITIAL_STOCK,
   trees: INITIAL_TREES,
@@ -167,6 +169,7 @@ export const INITIAL_FARM: GameState = {
   iron: INITIAL_IRON,
   gold: INITIAL_GOLD,
   flowers: INITIAL_FLOWERS,
+  hiveCells: INITIAL_CELLS,
   skills: {
     farming: new Decimal(0),
     gathering: new Decimal(0),
@@ -183,6 +186,7 @@ export const EMPTY: GameState = {
   iron: INITIAL_IRON,
   gold: INITIAL_GOLD,
   flowers: INITIAL_FLOWERS,
+  hiveCells: INITIAL_CELLS,
   skills: {
     farming: new Decimal(0),
     gathering: new Decimal(0),

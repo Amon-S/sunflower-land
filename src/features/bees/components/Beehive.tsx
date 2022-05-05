@@ -9,7 +9,7 @@ import { beesAudio } from "lib/utils/sfx";
 import beehive from "assets/buildings/beehive.png";
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
 import { Action } from "components/ui/Action";
-import { BeeSale } from "./BeeSale";
+import { BeeSale } from "./BeeInterface";
 import classNames from "classnames";
 import { Section } from "lib/utils/hooks/useScrollIntoView";
 export const Beehive: React.FC = () => {

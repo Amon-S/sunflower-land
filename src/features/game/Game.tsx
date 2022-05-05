@@ -35,7 +35,7 @@ import { ClockIssue } from "./components/ClockIssue";
 import { screenTracker } from "lib/utils/screen";
 import { Withdrawn } from "./components/Withdrawn";
 import { Resetting } from "features/auth/components/Resetting";
-
+import {  RandomBeeHunt } from "features/garden/components/Area/Area";
 import { Garden } from "features/garden/Garden";
 import { Bees } from "features/bees/Bees";
 
@@ -117,6 +117,7 @@ export const Game: React.FC = () => {
       </Modal>
 
       <ClockIssue show={gameState.context.offset > 0} />
+      <RandomBeeHunt />
       {/*     */}
       <Hud />
       <TeamDonation />

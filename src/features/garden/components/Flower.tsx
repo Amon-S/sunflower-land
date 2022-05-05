@@ -18,10 +18,10 @@ import classNames from "classnames";
 import { useActor } from "@xstate/react";
 import {
   canPollinate,
-  HoneyAction,
   POLLINATE_ERRORS,
   getRequiredBeeAmount,
-} from "features/game/events/harvestHoney";
+  COOLDOWN_LIST,
+} from "features/game/events/harvestPollen";
 
 import { getTimeLeft } from "lib/utils/time";
 import { ProgressBar } from "components/ui/ProgressBar";
@@ -29,6 +29,9 @@ import { Label } from "components/ui/Label";
 import { pollinateAudio, honeyHarvestAudio } from "lib/utils/sfx";
 import { HealthBar } from "components/ui/HealthBar";
 import { TimeLeftPanel } from "components/ui/TimeLeftPanel";
+import { Reward } from "features/game/types/game";
+
+import { FlowerReward } from "./FlowerReward";
 
 const POPOVER_TIME_MS = 1000;
 const HITS = 3;
@@ -44,12 +47,12 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
   const [showPopover, setShowPopover] = useState(true);
   const [showLabel, setShowLabel] = useState(false);
   const [popover, setPopover] = useState<JSX.Element | null>();
-
+  const [reward, setReward] = useState<Reward | null>();
   const [touchCount, setTouchCount] = useState(0);
   // When to hide the honey jar that pops out
   const [collecting, setCollecting] = useState(false);
 
-  const treeRef = useRef<HTMLDivElement>(null);
+  const flowerRef = useRef<HTMLDivElement>(null);
   const shakeGif = useRef<SpriteSheetInstance>();
   const choppedGif = useRef<SpriteSheetInstance>();
 
@@ -58,7 +61,7 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
   // Reset the shake count when clicking outside of the component
   useEffect(() => {
     const handleClickOutside = (event: any) => {
-      if (treeRef.current && !treeRef.current.contains(event.target)) {
+      if (flowerRef.current && !flowerRef.current.contains(event.target)) {
         setTouchCount(0);
       }
     };
@@ -91,7 +94,18 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
     setShowStumpTimeLeft(false);
   };
 
-  const beesNeeded = getRequiredBeeAmount(game.context.state.inventory);
+  const onCollectReward = () => {
+    setReward(null);
+    setTouchCount(0);
+
+    gameService.send("flower.pollinated", {
+      index: flowerIndex,
+    });
+  };
+  const beesNeeded = getRequiredBeeAmount(
+    game.context.state.inventory,
+    flower.name
+  );
   const beeAmount = game.context.state.inventory.Bee || new Decimal(0);
 
   // Has enough axes to chop the tree
@@ -130,6 +144,26 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
   const pollinate = async () => {
     setTouchCount(0);
 
+    // Already looking at a reward
+    if (reward) {
+      return;
+    }
+
+    if (
+      flower?.reward &&
+      getTimeLeft(flower.pollinatedAt, COOLDOWN_LIST[flower.name]) == 0
+    ) {
+      if (touchCount < 1) {
+        setTouchCount((count) => count + 1);
+        return;
+      }
+
+      // They have touched enough!
+      setReward(flower.reward);
+
+      return;
+    }
+
     try {
       gameService.send("flower.pollinated", {
         index: flowerIndex,
@@ -142,7 +176,7 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
       displayPopover(
         <div className="flex">
           <img src={honey} className="w-5 h-5 mr-2" />
-          <span className="text-sm text-white text-shadow">{`+${flower.honey}`}</span>
+          <span className="text-sm text-white text-shadow">{`+${flower.pollen}`}</span>
         </div>
       );
 
@@ -167,18 +201,18 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
 
   const handleHover = () => {
     if (game.matches("readonly") || hasBees) return;
-    treeRef.current?.classList["add"]("cursor-not-allowed");
+    flowerRef.current?.classList["add"]("cursor-not-allowed");
     setShowLabel(true);
   };
 
   const handleMouseLeave = () => {
     if (game.matches("readonly") || hasBees) return;
-    treeRef.current?.classList["remove"]("cursor-not-allowed");
+    flowerRef.current?.classList["remove"]("cursor-not-allowed");
     setShowLabel(false);
   };
 
-  const timeLeft = getTimeLeft(flower.pollinatedAt, flower.cooldown);
-  const percentage = 100 - (timeLeft / flower.cooldown) * 100;
+  const timeLeft = getTimeLeft(flower.pollinatedAt, COOLDOWN_LIST[flower.name]);
+  const percentage = 100 - (timeLeft / COOLDOWN_LIST[flower.name]) * 100;
 
   const message = `${flower.name} recovery in: `;
 
@@ -188,7 +222,7 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
         <div
           onMouseEnter={handleHover}
           onMouseLeave={handleMouseLeave}
-          ref={treeRef}
+          ref={flowerRef}
           className="group cursor-pointer  w-full h-full"
           onClick={shake}
         >
@@ -221,6 +255,9 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
             }`}
           >
             <Label>Equip a bee first</Label>
+          </div>
+          <div className={`${flower ? "opacity-0" : "opacity-100"}`}>
+            <Label>{flower.name}</Label>
           </div>
         </div>
       )}
@@ -299,6 +336,11 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
       >
         {popover}
       </div>
+      <FlowerReward
+        reward={reward}
+        onCollected={onCollectReward}
+        flowerIndex={flowerIndex}
+      />
     </div>
   );
 };

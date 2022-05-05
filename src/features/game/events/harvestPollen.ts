@@ -6,7 +6,6 @@ import {
   GameState,
   Inventory,
   InventoryItemName,
-  FLOWERS,
 } from "../types/game";
 
 export enum POLLINATE_ERRORS {
@@ -23,8 +22,13 @@ const getRandomBeeName = (): FlowerName => {
   return FlowerList[randomNum];
 };
 
+export const COOLDOWN_LIST = {
+  "White Flower": 10,
+  "Red Flower": 30,
+};
+
 export function canPollinate(flower: Flower, now: number = Date.now()) {
-  return now - flower.pollinatedAt > FLOWERS()[flower.name].cooldown;
+  return now - flower.pollinatedAt > COOLDOWN_LIST[flower.name] * 1000;
 }
 
 type GetPollinatedAtAtgs = {
@@ -35,21 +39,25 @@ type GetPollinatedAtAtgs = {
 /**
  * Set a chopped in the past to make it replenish faster
  */
-function getPollinatedAt({
-  inventory,
-  pollinatedAt,
-}: GetPollinatedAtAtgs): number {
+function getPollinatedAt({ pollinatedAt }: GetPollinatedAtAtgs): number {
   return pollinatedAt;
 }
 
 /**
  * Returns the amount of bee required to pollinate a flower
  */
-export function getRequiredBeeAmount(inventory: Inventory) {
+export function getRequiredBeeAmount(
+  inventory: Inventory,
+  flowerName: FlowerName
+) {
+  if (flowerName == "Red Flower") {
+    return new Decimal(2);
+  }
+
   return new Decimal(1);
 }
 
-export type HoneyAction = {
+export type PollenAction = {
   type: "flower.pollinated";
   name: FlowerName;
   index: number;
@@ -58,7 +66,7 @@ export type HoneyAction = {
 
 type Options = {
   state: GameState;
-  action: HoneyAction;
+  action: PollenAction;
   pollinatedAt?: number;
 };
 
@@ -67,7 +75,7 @@ export function Pollinate({
   action,
   pollinatedAt = Date.now(),
 }: Options): GameState {
-  const requiredBees = getRequiredBeeAmount(state.inventory);
+  const requiredBees = getRequiredBeeAmount(state.inventory, action.name);
   if (action.item !== "Bee" && requiredBees.gt(0)) {
     throw new Error(POLLINATE_ERRORS.MISSING_BEE);
   }
@@ -87,7 +95,7 @@ export function Pollinate({
     throw new Error(POLLINATE_ERRORS.STILL_GROWING);
   }
 
-  const honeyAmount = state.inventory.Honey || new Decimal(0);
+  const pollenAmount = state.inventory.Pollen || new Decimal(0);
   const newBeeName = getRandomBeeName();
 
   return {
@@ -95,7 +103,7 @@ export function Pollinate({
     inventory: {
       ...state.inventory,
       Bee: beeAmount.sub(requiredBees),
-      Honey: honeyAmount.add(flower.honey),
+      Pollen: pollenAmount.add(flower.pollen),
     },
     flowers: {
       ...state.flowers,
@@ -106,8 +114,8 @@ export function Pollinate({
           inventory: state.inventory,
         }),
         // Placeholder, random numbers generated on server side
-        honey: new Decimal(3),
-        cooldown: FLOWERS()[newBeeName].cooldown,
+        pollen: new Decimal(3),
+        cooldown: COOLDOWN_LIST[action.name],
       },
     },
   };

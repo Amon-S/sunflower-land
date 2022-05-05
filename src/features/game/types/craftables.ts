@@ -5,6 +5,7 @@ import { InventoryItemName } from "../types/game";
 import { Section } from "lib/utils/hooks/useScrollIntoView";
 import { Flag, FLAGS } from "./flags";
 import { marketRate } from "../lib/halvening";
+import { Beehive } from "features/bees/components/Beehive";
 
 export { FLAGS };
 
@@ -21,7 +22,7 @@ export type CraftableName =
   | Food
   | Animal
   | Flag
-  | Bee;
+  | HiveBee;
 
 export type Craftable = {
   name: CraftableName;
@@ -36,6 +37,7 @@ export type Craftable = {
   disabled?: boolean;
   requires?: InventoryItemName;
   section?: Section;
+  workTime?: number;
 };
 
 export type BlacksmithItem =
@@ -87,9 +89,11 @@ export type Tool =
   | "Stone Pickaxe"
   | "Iron Pickaxe"
   | "Hammer"
-  | "Rod";
+  | "Rod"
+  | "Net";
 
 export type Bee = "Bee";
+export type HiveBee = "Drone";
 export type Food =
   | "Pumpkin Soup"
   | "Roasted Cauliflower"
@@ -222,6 +226,12 @@ export const TOOLS: Record<Tool, Craftable> = {
       },
     ],
     disabled: true,
+  },
+  Net: {
+    name: "Net",
+    description: "Used to catch insects",
+    price: new Decimal(1),
+    ingredients: [],
   },
 };
 
@@ -731,13 +741,13 @@ export const ANIMALS: Record<Animal, Craftable> = {
   },
 };
 
-export const BEES: Record<Bee, Craftable> = {
-  Bee: {
-    name: "Bee",
-    description: "Produced delicious honey!",
-    price: new Decimal(1),
-    ingredients: [],
-    disabled: false,
+export const BEES: Record<HiveBee, Craftable> = {
+  Drone: {
+    name: "Drone",
+    description: "Produces honey from bee's pollen",
+    workTime: 60,
+    price: new Decimal(2),
+    ingredients: [{ item: "Bee", amount: new Decimal(1) }],
   },
 };
 
