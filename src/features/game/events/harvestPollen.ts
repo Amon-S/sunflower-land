@@ -37,14 +37,14 @@ type GetPollinatedAtAtgs = {
 };
 
 /**
- * Set a chopped in the past to make it replenish faster
+ * Set a pollinatedAt in the past to make it replenish faster
  */
 function getPollinatedAt({ pollinatedAt }: GetPollinatedAtAtgs): number {
   return pollinatedAt;
 }
 
 /**
- * Returns the amount of bee required to pollinate a flower
+ * Returns the amount of bees required to pollinate a  certain type of flower
  */
 export function getRequiredBeeAmount(
   inventory: Inventory,

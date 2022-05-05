@@ -155,7 +155,7 @@ export const INITIAL_FARM: GameState = {
     "Bee Hive": new Decimal(1),
     "Pumpkin Soup": new Decimal(1),
     Sauerkraut: new Decimal(1),
-    
+    Queen: new Decimal(1),
     Bee: new Decimal(10),
     Pollen: new Decimal(10),
   },

@@ -83,10 +83,10 @@ export const Rare: React.FC<Props> = ({
   const [showCaptcha, setShowCaptcha] = useState(false);
 
   console.log({ itemsMintedAt });
+  
   useEffect(() => {
     const load = async () => {
       const supply = await metamask.getInventory().totalSupply();
-
       setSupply(supply);
       setIsLoading(false);
     };

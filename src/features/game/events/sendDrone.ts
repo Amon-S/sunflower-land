@@ -1,7 +1,6 @@
 import Decimal from "decimal.js-light";
 import { screenTracker } from "lib/utils/screen";
 import { BEES, HiveBee } from "../types/craftables";
-import { CropName, CROPS, SeedName } from "../types/crops";
 import { GameState, Inventory, InventoryItemName } from "../types/game";
 
 export type WorkAction = {
@@ -10,7 +9,7 @@ export type WorkAction = {
   index: number;
 };
 
-// Seeds which are implemented
+// Bees which are implemented
 const VALID_WORKERS: InventoryItemName[] = ["Drone"];
 
 export function isBee(bee: InventoryItemName): bee is HiveBee {
@@ -30,7 +29,7 @@ type GetWorkedAtArgs = {
 };
 
 /**
- * Based on boosts, how long a crop will take
+ * Based on boosts, how long a cell will take to make honey
  */
 export const getBeeTime = (bee: HiveBee, inventory: Inventory) => {
   let seconds = BEES[bee].workTime as number;
@@ -39,7 +38,7 @@ export const getBeeTime = (bee: HiveBee, inventory: Inventory) => {
 };
 
 /**
- * Set a plantedAt in the past to make a crop grow faster
+ * Set a workedAt in the past to make a cell produce faster
  */
 function getWorkedAt({ bee, inventory, workedAt }: GetWorkedAtArgs): number {
   const beeTime = BEES[bee].workTime as number;
@@ -98,7 +97,6 @@ export function harvestHoney({
 
   const beeCount = state.inventory[action.item] || new Decimal(0);
   const pollenCount = state.inventory.Pollen || new Decimal(0);
-  const honeyCount = state.inventory.Honey || new Decimal(0);
 
   if (beeCount.lessThan(1)) {
     throw new Error("Not enough drones ");
@@ -127,7 +125,6 @@ export function harvestHoney({
       ...state.inventory,
       [action.item]: beeCount.sub(1),
       Pollen: pollenCount.sub(5),
-      Honey: honeyCount.add(new Decimal(4)),
     },
     hiveCells: newCells,
   } as GameState;

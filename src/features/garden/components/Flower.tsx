@@ -12,6 +12,7 @@ import honeySheet from "assets/resources/flower/Honey_sheet_Updated.png";
 import flowerStump from "assets/resources/flower/flower_stump.png";
 import honey from "assets/resources/honey.png";
 import bee from "assets/animals/bees/bee.png";
+import pollen from "assets/resources/flower/pollen.png";
 
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
 import { Context } from "features/game/GameProvider";
@@ -177,7 +178,7 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
 
       displayPopover(
         <div className="flex">
-          <img src={honey} className="w-5 h-5 mr-2" />
+          <img src={pollen} className="w-5 h-5 mr-2" />
           <span className="text-sm text-white text-shadow">{`+${getGivenPollen(
             flower.name
           )}`}</span>

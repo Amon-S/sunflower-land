@@ -3,6 +3,7 @@ import {
   FieldItem,
   Flower,
   GameState,
+  HiveCell,
   InventoryItemName,
   Rock,
   Tree,
@@ -57,6 +58,7 @@ export function makeGame(farm: any): GameState {
       }),
       {} as Record<number, Rock>
     ),
+
     iron: Object.keys(farm.iron).reduce(
       (items, item) => ({
         ...items,
@@ -83,7 +85,7 @@ export function makeGame(farm: any): GameState {
     },
     balance: new Decimal(farm.balance),
     fields: farm.fields,
-
+    hiveCells: farm.hiveCells,
     id: farm.id,
   };
 }
@@ -134,6 +136,17 @@ export function updateGame(
           },
         };
       }, {} as Record<number, FieldItem>),
+      hiveCells: Object.keys(oldGameState.hiveCells).reduce((cells, cellId) => {
+        const id = Number(cellId);
+        const cell = oldGameState.hiveCells[id];
+        return {
+          ...cells,
+          [id]: {
+            ...cell,
+            reward: newGameState.fields[id].reward,
+          },
+        };
+      }, {} as Record<number, HiveCell>),
 
       // Update tree with the random amount of wood from the server
       trees: Object.keys(oldGameState.trees).reduce((trees, treeId) => {
@@ -154,7 +167,7 @@ export function updateGame(
           ...flowers,
           [id]: {
             ...flower,
-            honey: newGameState.flowers[id].honey,
+            reward: newGameState.flowers[id].reward,
           },
         };
       }, {} as Record<number, Flower>),
