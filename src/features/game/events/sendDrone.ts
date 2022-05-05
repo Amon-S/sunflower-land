@@ -79,6 +79,10 @@ export function harvestHoney({
     throw new Error("Field does not exist");
   }
 
+  if (action.index > 3 && action.index < 6 && !state.inventory["Bee Box"]) {
+    throw new Error("Need to upgrade hive");
+  }
+
   const cell = cells[action.index];
   if (cell) {
     throw new Error("Crop is already planted");

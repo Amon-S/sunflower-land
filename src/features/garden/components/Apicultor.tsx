@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 
 import apicultor from "assets/npcs/apicultor.gif";
 import questionMark from "assets/icons/expression_confused.png";
-import Bee from "assets/animals/bee.png";
+import Bee from "assets/animals/bees/bee.png";
 
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
 
@@ -18,8 +18,8 @@ export const Apicultor: React.FC = () => {
         background: "red",
         width: "100px",
         position:"absolute",
-        right: `${GRID_WIDTH_PX * 0.50}px`,
-        top: `${GRID_WIDTH_PX * 1.5}px`,
+        right: `${GRID_WIDTH_PX * 4}px`,
+        top: `${GRID_WIDTH_PX * -6}px`,
       }}
     >
       <img

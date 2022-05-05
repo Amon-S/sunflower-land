@@ -484,16 +484,16 @@ export const BLACKSMITH_ITEMS: Record<BlacksmithItem, Craftable> = {
   },
   "Bee Box": {
     name: "Bee Box",
-    description: "Gather 20% more honey",
+    description: "Unlocks more hive cells",
     price: new Decimal(50),
     ingredients: [
       {
-        amount: new Decimal(300),
+        amount: new Decimal(20),
         item: "Honey",
       },
       {
-        amount: new Decimal(1),
-        item: "Bee Hive",
+        amount: new Decimal(10),
+        item: "Bee",
       },
     ],
     supply: 300,

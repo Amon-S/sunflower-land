@@ -24,7 +24,7 @@ const getRandomBeeName = (): FlowerName => {
 
 export const COOLDOWN_LIST = {
   "White Flower": 10,
-  "Red Flower": 30,
+  "Red Flower": 30 * 60,
 };
 
 export function canPollinate(flower: Flower, now: number = Date.now()) {
@@ -55,6 +55,14 @@ export function getRequiredBeeAmount(
   }
 
   return new Decimal(1);
+}
+
+export function getGivenPollen(flower: FlowerName) {
+  if (flower == "Red Flower") {
+    return new Decimal(5);
+  } else if (flower == "White Flower") {
+    return new Decimal(1);
+  }
 }
 
 export type PollenAction = {
@@ -91,19 +99,40 @@ export function Pollinate({
     throw new Error(POLLINATE_ERRORS.NO_FLOWER);
   }
 
+  if (flower.name == "Red Flower" && beeAmount.lessThan(2)) {
+    throw new Error(`Not enough bees for ${flower.name}`);
+  }
+
   if (!canPollinate(flower, pollinatedAt)) {
     throw new Error(POLLINATE_ERRORS.STILL_GROWING);
   }
 
   const pollenAmount = state.inventory.Pollen || new Decimal(0);
   const newBeeName = getRandomBeeName();
+  const addedAmount = getGivenPollen(flower.name) as Decimal;
+  const honeyAmount = state.inventory.Honey || new Decimal(0);
+
+  function randomNum(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  function extraDrop(flower: FlowerName) {
+    const rand = randomNum(5, 1);
+
+    if (flower == "Red Flower" && rand === 3) {
+      return new Decimal(1);
+    } else {
+      return new Decimal(0);
+    }
+  }
 
   return {
     ...state,
     inventory: {
       ...state.inventory,
       Bee: beeAmount.sub(requiredBees),
-      Pollen: pollenAmount.add(flower.pollen),
+      Pollen: pollenAmount.add(addedAmount),
+      Honey: honeyAmount.add(extraDrop(flower.name)),
     },
     flowers: {
       ...state.flowers,
@@ -114,7 +143,6 @@ export function Pollinate({
           inventory: state.inventory,
         }),
         // Placeholder, random numbers generated on server side
-        pollen: new Decimal(3),
         cooldown: COOLDOWN_LIST[action.name],
       },
     },

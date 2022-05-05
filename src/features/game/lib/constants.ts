@@ -98,22 +98,18 @@ export const INITIAL_TREES: GameState["trees"] = {
 export const INITIAL_FLOWERS: GameState["flowers"] = {
   0: {
     name: "White Flower",
-    pollen: new Decimal(1),
     pollinatedAt: 0,
   },
   1: {
     name: "White Flower",
-    pollen: new Decimal(3),
     pollinatedAt: 0,
   },
   2: {
     name: "White Flower",
-    pollen: new Decimal(2),
     pollinatedAt: 0,
   },
   3: {
     name: "Red Flower",
-    pollen: new Decimal(2),
     pollinatedAt: 0,
   },
 };
@@ -159,7 +155,7 @@ export const INITIAL_FARM: GameState = {
     "Bee Hive": new Decimal(1),
     "Pumpkin Soup": new Decimal(1),
     Sauerkraut: new Decimal(1),
-    "Roasted Cauliflower": new Decimal(1),
+    
     Bee: new Decimal(10),
     Pollen: new Decimal(10),
   },

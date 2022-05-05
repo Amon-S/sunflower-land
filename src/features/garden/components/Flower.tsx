@@ -7,10 +7,11 @@ import Spritesheet, {
 import Decimal from "decimal.js-light";
 
 import flowerSheet from "assets/resources/flower/Flower_harvest.png";
+import flowerSheetWhite from "assets/resources/flower/Flower_harvest_white.png";
 import honeySheet from "assets/resources/flower/Honey_sheet_Updated.png";
 import flowerStump from "assets/resources/flower/flower_stump.png";
 import honey from "assets/resources/honey.png";
-import bee from "assets/animals/bee.png";
+import bee from "assets/animals/bees/bee.png";
 
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
 import { Context } from "features/game/GameProvider";
@@ -21,6 +22,7 @@ import {
   POLLINATE_ERRORS,
   getRequiredBeeAmount,
   COOLDOWN_LIST,
+  getGivenPollen,
 } from "features/game/events/harvestPollen";
 
 import { getTimeLeft } from "lib/utils/time";
@@ -176,7 +178,9 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
       displayPopover(
         <div className="flex">
           <img src={honey} className="w-5 h-5 mr-2" />
-          <span className="text-sm text-white text-shadow">{`+${flower.pollen}`}</span>
+          <span className="text-sm text-white text-shadow">{`+${getGivenPollen(
+            flower.name
+          )}`}</span>
         </div>
       );
 
@@ -237,7 +241,9 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
             getInstance={(spritesheet) => {
               shakeGif.current = spritesheet;
             }}
-            image={flowerSheet}
+            image={
+              flower.name == "White Flower" ? flowerSheetWhite : flowerSheet
+            }
             widthFrame={266}
             heightFrame={168}
             fps={24}

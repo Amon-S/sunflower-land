@@ -58,20 +58,14 @@ export type FlowerName = "White Flower" | "Red Flower";
 
 export type Flower = {
   name: FlowerName;
-  pollen: Decimal;
   //Epoch time in milliseconds
   pollinatedAt: number;
   cooldown?: number;
   reward?: Reward;
 };
 
-export type WorkerBee = {
-  buyPrice: Decimal;
-  ingredients: [{}];
-  harvestSeconds: number;
-  name: CropName;
-  description: string;
-};
+
+
 
 export type HiveCell = {
   worker: HiveBee;
@@ -82,12 +76,10 @@ export type HiveCell = {
 export const FLOWERS: () => Record<FlowerName, Flower> = () => ({
   "White Flower": {
     name: "White Flower",
-    pollen: new Decimal(1),
     pollinatedAt: 0,
   },
   "Red Flower": {
     name: "Red Flower",
-    pollen: new Decimal(1),
     pollinatedAt: 0,
   },
 });
