@@ -36,7 +36,7 @@ import { screenTracker } from "lib/utils/screen";
 import { Withdrawn } from "./components/Withdrawn";
 import { Resetting } from "features/auth/components/Resetting";
 
-import Stage from "features/musicStage/Stage";
+import { Stage } from "features/musicStage/Stage";
 
 const AUTO_SAVE_INTERVAL = 1000 * 30; // autosave every 30 seconds
 const SHOW_MODAL: Record<StateValues, boolean> = {
