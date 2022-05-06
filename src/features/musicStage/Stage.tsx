@@ -140,7 +140,7 @@ export default function Stage() {
             >
               <Npc
                 img={Romy}
-                message={"i am romy"}
+                message={"I have potato blood in my veins!"}
                 X={-3.75}
                 Y={-14}
                 scale={"scale(0.8)"}
