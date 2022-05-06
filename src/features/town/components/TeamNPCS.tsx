@@ -15,7 +15,7 @@ const NPC_LIST = [
     message: `"Team Goblin? Team sunflower? What about Team Chicken?" Chicken`,
   },
   {
-    message: `"Games should to be owned by the community that supports them" Adam`,
+    message: `"Games should be owned by the community that supports them" Adam`,
   },
   {
     message: `"Be Respectful, Stay Positive and Have Fun!" Steve`,
