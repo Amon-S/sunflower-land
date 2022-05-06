@@ -144,4 +144,5 @@ export const fitzeeGhostAudio = new Howl({
 export const sfl2Audio = new Howl({
   src: [sfl2],
   volume: 0.2,
+  loop: true,
 });
