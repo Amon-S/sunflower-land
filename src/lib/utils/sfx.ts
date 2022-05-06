@@ -23,6 +23,8 @@ import fountainMp3 from "../../assets/sound-effects/fountain.mp3";
 import beesMp3 from "../../assets/sound-effects/bees.mp3";
 import pollinateMp3 from "../../assets/sound-effects/pollinating.mp3";
 import honeyHarvestMp3 from "../../assets/sound-effects/honeyHarvest.mp3";
+import ghostyWav from "../../assets/sound-effects/Ghosty.wav";
+import sfl2 from "../../assets/songs/sfl2.mp3";
 
 export const harvestAudio = new Howl({
   src: [harvestMp3],
@@ -132,4 +134,14 @@ export const pollinateAudio = new Howl({
 export const honeyHarvestAudio = new Howl({
   src: [honeyHarvestMp3],
   volume: 0.5,
+});
+
+export const fitzeeGhostAudio = new Howl({
+  src: [ghostyWav],
+  volume: 0.2,
+});
+
+export const sfl2Audio = new Howl({
+  src: [sfl2],
+  volume: 0.2,
 });
