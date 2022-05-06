@@ -22,7 +22,7 @@ const NPC_LIST = [
       "I tried to think of something clever, but ended up farming instead",
   },
   {
-    message: "I am Ken, Chic-Chic-Ken",
+    message: "Team Goblin? Team sunflower? What about Team Chicken?",
   },
   {
     message: "Games should to be owned by the community that supports them",
