@@ -1,9 +1,7 @@
 import Decimal from "decimal.js-light";
 import {
   FieldItem,
-  Flower,
   GameState,
-  HiveCell,
   InventoryItemName,
   Rock,
   Tree,
@@ -37,16 +35,6 @@ export function makeGame(farm: any): GameState {
         },
       }),
       {} as Record<number, Tree>
-    ),
-    flowers: Object.keys(farm.flowers).reduce(
-      (items, item) => ({
-        ...items,
-        [item]: {
-          ...farm.flowers[item],
-          honey: new Decimal(farm.flowers[item].honey),
-        },
-      }),
-      {} as Record<number, Flower>
     ),
     stones: Object.keys(farm.stones).reduce(
       (items, item) => ({
@@ -85,7 +73,7 @@ export function makeGame(farm: any): GameState {
     },
     balance: new Decimal(farm.balance),
     fields: farm.fields,
-    hiveCells: farm.hiveCells,
+
     id: farm.id,
   };
 }
@@ -136,17 +124,6 @@ export function updateGame(
           },
         };
       }, {} as Record<number, FieldItem>),
-      hiveCells: Object.keys(oldGameState.hiveCells).reduce((cells, cellId) => {
-        const id = Number(cellId);
-        const cell = oldGameState.hiveCells[id];
-        return {
-          ...cells,
-          [id]: {
-            ...cell,
-            reward: newGameState.fields[id].reward,
-          },
-        };
-      }, {} as Record<number, HiveCell>),
 
       // Update tree with the random amount of wood from the server
       trees: Object.keys(oldGameState.trees).reduce((trees, treeId) => {
@@ -160,17 +137,6 @@ export function updateGame(
           },
         };
       }, {} as Record<number, Tree>),
-      flowers: Object.keys(oldGameState.flowers).reduce((flowers, flowerId) => {
-        const id = Number(flowerId);
-        const flower = oldGameState.flowers[id];
-        return {
-          ...flowers,
-          [id]: {
-            ...flower,
-            reward: newGameState.flowers[id].reward,
-          },
-        };
-      }, {} as Record<number, Flower>),
       stones: updateRocks(oldGameState.stones, newGameState.stones),
       iron: updateRocks(oldGameState.iron, newGameState.iron),
       gold: updateRocks(oldGameState.gold, newGameState.gold),

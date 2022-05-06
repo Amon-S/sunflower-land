@@ -134,19 +134,6 @@ import pinkEgg from "src/assets/nfts/easter/pink_egg.png";
 import easterBasket from "src/assets/nfts/easter/basket.png";
 import easterBunny from "src/assets/nfts/easter/easter_bunny.gif";
 
-// Bees
-
-import beehive from "assets/buildings/hive.png";
-import beebox from "assets/buildings/beehive.png";
-import sunflowerCake from "assets/nfts/sunflower_cake.png";
-import pollen from "assets/resources/flower/pollen.png";
-import honey from "assets/resources/honey.png";
-import queen from "assets/animals/bees/queenGif.gif";
-import flower from "assets/resources/flower/flower.png";
-import net from "assets/tools/Net.png";
-import beeGif from "assets/animals/bees/beeGif.gif";
-import drone from "assets/animals/bees/droneGif.gif";
-
 import { InventoryItemName } from "./game";
 import {
   FOODS,
@@ -156,14 +143,11 @@ import {
   MARKET_ITEMS,
   BARN_ITEMS,
   CRAFTABLES,
-  BEE_ITEMS,
-  BEES,
 } from "./craftables";
 import { CROPS, SEEDS } from "./crops";
 import { RESOURCES } from "./resources";
 import { Section } from "lib/utils/hooks/useScrollIntoView";
 import { SKILL_TREE } from "./skills";
-import { pollinateAudio } from "lib/utils/sfx";
 
 export type ItemDetails = {
   description: string;
@@ -308,26 +292,6 @@ export const ITEM_DETAILS: Items = {
     ...RESOURCES["Chicken"],
     image: questionMark,
   },
-  Honey: {
-    ...RESOURCES["Honey"],
-    image: honey,
-  },
-  Pollen: {
-    ...RESOURCES["Pollen"],
-    image: pollen,
-  },
-  Bee: {
-    ...RESOURCES["Bee"],
-    image: beeGif,
-  },
-  Drone: {
-    ...RESOURCES["Drone"],
-    image: drone,
-  },
-  Queen: {
-    ...BEE_ITEMS["Queen"],
-    image: queen,
-  },
 
   // TOOLS
   Axe: {
@@ -354,10 +318,7 @@ export const ITEM_DETAILS: Items = {
     ...TOOLS["Rod"],
     image: rod,
   },
-  Net: {
-    ...TOOLS["Net"],
-    image: net,
-  },
+
   // NFTs
 
   "Sunflower Statue": {
@@ -455,11 +416,6 @@ export const ITEM_DETAILS: Items = {
   "Farmer Bath": {
     ...BLACKSMITH_ITEMS["Farmer Bath"],
     image: farmerBath,
-  },
-
-  "Sunflower Cake": {
-    ...BEE_ITEMS["Sunflower Cake"],
-    image: sunflowerCake,
   },
 
   // FOOD
@@ -724,23 +680,5 @@ export const ITEM_DETAILS: Items = {
   "Purple Egg": {
     description: "A purple easter egg",
     image: purpleEgg,
-  },
-
-  "Bee Hive": {
-    description: "Unlocks honey production",
-    image: beehive,
-  },
-
-  "Bee Box": {
-    description: "incarese honey production",
-    image: beebox,
-  },
-  "White Flower": {
-    description: "white flower",
-    image: flower,
-  },
-  "Red Flower": {
-    description: "Red flower",
-    image: flower,
   },
 };

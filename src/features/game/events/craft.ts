@@ -1,6 +1,5 @@
 import Decimal from "decimal.js-light";
 import {
-  BEES,
   Craftable,
   CraftableName,
   CRAFTABLES,
@@ -25,7 +24,6 @@ const VALID_ITEMS = Object.keys({
   ...TOOLS,
   ...SEEDS(),
   ...FOODS(),
-  ...BEES,
 }) as CraftableName[];
 
 function isCraftable(
@@ -36,11 +34,9 @@ function isCraftable(
 }
 
 export function getBuyPrice(item: Craftable, inventory: Inventory) {
-  if (isSeed(item.name) && inventory.Kuebiko?.gte(1) ) {
+  if (isSeed(item.name) && inventory.Kuebiko?.gte(1)) {
     return new Decimal(0);
   }
-  
-  
 
   return item.price;
 }

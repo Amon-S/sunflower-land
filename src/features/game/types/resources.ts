@@ -4,12 +4,7 @@ export type ResourceName =
   | "Iron"
   | "Gold"
   | "Egg"
-  | "Chicken"
-  | "Bee"
-  | "Drone"
-  | "Queen"
-  | "Pollen"
-  | "Honey";
+  | "Chicken";
 
 export type Resource = {
   description: string;
@@ -33,19 +28,4 @@ export const RESOURCES: Record<ResourceName, Resource> = {
   Chicken: {
     description: "Used to lay eggs",
   },
-  Bee: {
-    description: "Used to collect pollen",
-  },
-  Drone: {
-    description: "Used to process honey",
-  },
-  Queen: {
-    description: "Used to make more bees",
-  },
-  Honey: {
-    description: "Used to create delicious recipes",
-  },
-  Pollen:{
-    description: "Used by drones to make honey",
-  }
 };

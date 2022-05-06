@@ -167,7 +167,7 @@ export default function Stage() {
                 "No matter how much time passes, we appreciate everyone who is part in the Making of SunflowerLand"
               }
               scale={"scale(0.6)"}
-              X={-4.73}
+              X={-3.73}
               Y={-3.3}
             />
           )}

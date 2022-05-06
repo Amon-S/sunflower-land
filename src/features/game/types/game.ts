@@ -2,7 +2,7 @@ import { Decimal } from "decimal.js-light";
 import { GameEvent } from "../events";
 
 import { CropName, SeedName } from "./crops";
-import { CraftableName, BeeItem, HiveBee } from "./craftables";
+import { CraftableName } from "./craftables";
 import { ResourceName } from "./resources";
 import { SkillName } from "./skills";
 
@@ -54,36 +54,6 @@ export const EASTER_EGGS: EasterEgg[] = [
 
 export type EasterBunny = "Easter Bunny";
 
-export type FlowerName = "White Flower" | "Red Flower";
-
-export type Flower = {
-  name: FlowerName;
-  //Epoch time in milliseconds
-  pollinatedAt: number;
-  cooldown?: number;
-  reward?: Reward;
-};
-
-
-
-
-export type HiveCell = {
-  worker: HiveBee;
-  taskStart: number;
-  multiplier?: number;
-};
-
-export const FLOWERS: () => Record<FlowerName, Flower> = () => ({
-  "White Flower": {
-    name: "White Flower",
-    pollinatedAt: 0,
-  },
-  "Red Flower": {
-    name: "Red Flower",
-    pollinatedAt: 0,
-  },
-});
-
 export type InventoryItemName =
   | CropName
   | SeedName
@@ -91,9 +61,7 @@ export type InventoryItemName =
   | ResourceName
   | SkillName
   | EasterEgg
-  | EasterBunny
-  | BeeItem
-  | FlowerName;
+  | EasterBunny;
 
 export type Inventory = Partial<Record<InventoryItemName, Decimal>>;
 
@@ -105,12 +73,12 @@ export type GameState = {
   id?: number;
   balance: Decimal;
   fields: Record<number, FieldItem>;
-  hiveCells: Record<number, HiveCell>;
+
   trees: Record<number, Tree>;
   stones: Record<number, Rock>;
   iron: Record<number, Rock>;
   gold: Record<number, Rock>;
-  flowers: Record<number, Flower>;
+
   inventory: Inventory;
   stock: Inventory;
 
