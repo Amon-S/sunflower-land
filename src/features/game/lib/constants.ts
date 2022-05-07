@@ -1,5 +1,4 @@
 import Decimal from "decimal.js-light";
-import { fromWei } from "web3-utils";
 import { GameState, Inventory } from "../types/game";
 
 export const GRID_WIDTH_PX = 42;
@@ -25,6 +24,10 @@ export const INITIAL_STOCK: Inventory = {
   "Pumpkin Soup": new Decimal(1),
   Sauerkraut: new Decimal(1),
   "Roasted Cauliflower": new Decimal(1),
+
+  //test bee stock
+  Net: new Decimal(20),
+  Drone: new Decimal(10),
 };
 
 export const INITIAL_FIELDS: GameState["fields"] = {
@@ -65,6 +68,27 @@ export const INITIAL_FIELDS: GameState["fields"] = {
     plantedAt: 0,
   },
 };
+
+export const INITIAL_FLOWERS: GameState["flowers"] = {
+  0: {
+    name: "White Flower",
+    pollinatedAt: 0,
+  },
+  1: {
+    name: "White Flower",
+    pollinatedAt: 0,
+  },
+  2: {
+    name: "White Flower",
+    pollinatedAt: 0,
+  },
+  3: {
+    name: "Red Flower",
+    pollinatedAt: 0,
+  },
+};
+
+export const INITIAL_CELLS: GameState["hiveCells"] = {};
 
 export const INITIAL_TREES: GameState["trees"] = {
   0: {
@@ -123,14 +147,23 @@ export const INITIAL_GOLD: GameState["gold"] = {
 };
 
 export const INITIAL_FARM: GameState = {
-  balance: new Decimal(fromWei("0")),
+  balance: new Decimal(50),
   fields: INITIAL_FIELDS,
+
+  flowers: INITIAL_FLOWERS,
+  hiveCells: INITIAL_CELLS,
+
   inventory: {
     Sunflower: new Decimal(5),
     Potato: new Decimal(12),
     Scarecrow: new Decimal(4),
     "Roasted Cauliflower": new Decimal(1),
     Sauerkraut: new Decimal(1),
+    Axe: new Decimal(1),
+
+    Queen: new Decimal(1),
+    Bee: new Decimal(10),
+    Pollen: new Decimal(10),
   },
   stock: INITIAL_STOCK,
   trees: INITIAL_TREES,
@@ -144,8 +177,10 @@ export const INITIAL_FARM: GameState = {
 };
 
 export const EMPTY: GameState = {
-  balance: new Decimal(fromWei("0")),
+  balance: new Decimal(50),
   fields: {},
+  flowers: INITIAL_FLOWERS,
+  hiveCells: INITIAL_CELLS,
   inventory: {},
   stock: {},
   trees: INITIAL_TREES,

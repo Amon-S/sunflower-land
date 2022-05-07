@@ -21,7 +21,8 @@ export type CraftableName =
   | SeedName
   | Food
   | Animal
-  | Flag;
+  | Flag
+  | HiveBee;
 
 export interface Craftable {
   name: CraftableName;
@@ -51,6 +52,7 @@ export interface CraftableItem {
   ingredients?: Ingredient[];
   disabled?: boolean;
   requires?: InventoryItemName;
+  workTime?: number;
 }
 
 export interface LimitedItem extends CraftableItem {
@@ -75,7 +77,9 @@ export type BlacksmithItem =
   | "Nyon Statue"
   | "Homeless Tent"
   | "Egg Basket"
-  | "Farmer Bath";
+  | "Farmer Bath"
+  | "Bee Hive"
+  | "Bee Box";
 
 export type BarnItem =
   | "Farm Cat"
@@ -92,7 +96,14 @@ export type MarketItem =
   | "Mysterious Parsnip"
   | "Carrot Sword";
 
-export type LimitedItemName = BlacksmithItem | BarnItem | MarketItem | Flag;
+export type BeeItem = "Queen" | "Sunflower Cake";
+
+export type LimitedItemName =
+  | BlacksmithItem
+  | BarnItem
+  | MarketItem
+  | Flag
+  | BeeItem;
 
 export type Tool =
   | "Axe"
@@ -100,7 +111,8 @@ export type Tool =
   | "Stone Pickaxe"
   | "Iron Pickaxe"
   | "Hammer"
-  | "Rod";
+  | "Rod"
+  | "Net";
 
 export type Food =
   | "Pumpkin Soup"
@@ -109,6 +121,9 @@ export type Food =
   | "Radish Pie";
 
 export type Animal = "Chicken" | "Cow" | "Pig" | "Sheep";
+
+export type Bee = "Bee";
+export type HiveBee = "Drone";
 
 export const FOODS: () => Record<Food, CraftableItem> = () => ({
   "Pumpkin Soup": {
@@ -234,6 +249,12 @@ export const TOOLS: Record<Tool, CraftableItem> = {
     ],
     disabled: true,
   },
+  Net: {
+    name: "Net",
+    description: "Used to catch insects",
+    tokenAmount: new Decimal(1),
+    ingredients: [],
+  },
 };
 
 export const BLACKSMITH_ITEMS: Record<BlacksmithItem, LimitedItem> = {
@@ -310,6 +331,14 @@ export const BLACKSMITH_ITEMS: Record<BlacksmithItem, LimitedItem> = {
   "Egg Basket": {
     name: "Egg Basket",
     description: "Gives access to the Easter Egg Hunt",
+  },
+  "Bee Hive": {
+    name: "Bee Hive",
+    description: "Gives access to the Hive for honey production",
+  },
+  "Bee Box": {
+    name: "Bee Box",
+    description: "Boost honey production",
   },
 };
 
@@ -402,6 +431,28 @@ export const ANIMALS: Record<Animal, CraftableItem> = {
   },
 };
 
+export const BEES: Record<HiveBee, CraftableItem> = {
+  Drone: {
+    name: "Drone",
+    description: "Produces honey from bee's pollen",
+    workTime: 60,
+    tokenAmount: new Decimal(2),
+    ingredients: [{ item: "Bee", amount: new Decimal(1) }],
+  },
+};
+
+export const BEE_ITEMS: Record<BeeItem, CraftableItem> = {
+  Queen: {
+    name: "Queen",
+    description: "Earn an extra 5 bees per week",
+    // section: Section["Bee Hive"],
+  },
+  "Sunflower Cake": {
+    name: "Sunflower Cake",
+    description: "Give an energy boost to your farm animals",
+  },
+};
+
 type Craftables = Record<CraftableName, CraftableItem>;
 
 export const CRAFTABLES: () => Craftables = () => ({
@@ -413,6 +464,8 @@ export const CRAFTABLES: () => Craftables = () => ({
   ...FOODS(),
   ...ANIMALS,
   ...FLAGS,
+  ...BEES,
+  ...BEE_ITEMS,
 });
 
 /**

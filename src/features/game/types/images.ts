@@ -138,6 +138,18 @@ import pinkEgg from "src/assets/nfts/easter/pink_egg.png";
 import easterBasket from "src/assets/nfts/easter/basket.png";
 import easterBunny from "src/assets/nfts/easter/easter_bunny.gif";
 
+// Bees
+
+import beehive from "assets/buildings/hive.png";
+import beebox from "assets/buildings/beehive.png";
+import sunflowerCake from "assets/nfts/sunflower_cake.png";
+import pollen from "assets/resources/flower/pollen.png";
+import honey from "assets/resources/honey.png";
+import queen from "assets/animals/bees/queenGif.gif";
+import net from "assets/tools/Net.png";
+import beeGif from "assets/animals/bees/beeGif.gif";
+import drone from "assets/animals/bees/droneGif.gif";
+
 import { InventoryItemName } from "./game";
 import {
   FOODS,
@@ -147,6 +159,7 @@ import {
   MARKET_ITEMS,
   BARN_ITEMS,
   CRAFTABLES,
+  BEE_ITEMS,
 } from "./craftables";
 import { CROPS, SEEDS } from "./crops";
 import { RESOURCES } from "./resources";
@@ -296,6 +309,30 @@ export const ITEM_DETAILS: Items = {
     ...RESOURCES["Chicken"],
     image: questionMark,
   },
+  Honey: {
+    ...RESOURCES["Honey"],
+    image: honey,
+  },
+  Pollen: {
+    ...RESOURCES["Pollen"],
+    image: pollen,
+  },
+  Bee: {
+    ...RESOURCES["Bee"],
+    image: beeGif,
+  },
+  Drone: {
+    ...RESOURCES["Drone"],
+    image: drone,
+  },
+  Queen: {
+    ...BEE_ITEMS["Queen"],
+    image: queen,
+  },
+  "Sunflower Cake": {
+    ...BEE_ITEMS["Sunflower Cake"],
+    image: sunflowerCake,
+  },
 
   // TOOLS
   Axe: {
@@ -322,7 +359,10 @@ export const ITEM_DETAILS: Items = {
     ...TOOLS["Rod"],
     image: rod,
   },
-
+  Net: {
+    ...TOOLS["Net"],
+    image: net,
+  },
   // NFTs
 
   "Sunflower Statue": {
@@ -420,6 +460,14 @@ export const ITEM_DETAILS: Items = {
   "Farmer Bath": {
     ...BLACKSMITH_ITEMS["Farmer Bath"],
     image: farmerBath,
+  },
+  "Bee Hive": {
+    ...BLACKSMITH_ITEMS["Bee Hive"],
+    image: beehive,
+  },
+  "Bee Box": {
+    ...BLACKSMITH_ITEMS["Bee Box"],
+    image: beebox,
   },
 
   // FOOD

@@ -56,8 +56,10 @@ export async function getOnChainState({
     return { game: EMPTY, owner: "", limitedItems: [] };
   }
 
-  const balance = await metamask.getToken().balanceOf(farmAddress);
-  const balances = await metamask.getInventory().getBalances(farmAddress);
+  const balance =
+    (await metamask.getToken().balanceOf(farmAddress)) || new Decimal(50);
+  const balances =
+    (await metamask.getInventory().getBalances(farmAddress)) || new Decimal(50);
   const farm = await metamask.getFarm().getFarm(id);
 
   // Short term workaround to get data from session contract

@@ -21,7 +21,6 @@ import { Quarry } from "features/farming/quarry/Quarry";
 import { TeamDonation } from "features/farming/teamDonation/TeamDonation";
 import { Forest } from "features/farming/forest/Forest";
 
-import { StateValues } from "./lib/gameMachine";
 import { Town } from "features/farming/town/Town";
 import { ErrorCode } from "lib/errors";
 import { ErrorMessage } from "features/auth/ErrorMessage";
@@ -30,6 +29,10 @@ import { Lore } from "./components/Lore";
 import { ClockIssue } from "./components/ClockIssue";
 import { screenTracker } from "lib/utils/screen";
 import { Resetting } from "features/auth/components/Resetting";
+import { Bees } from "features/farming/bees/Bees";
+import { Garden } from "features/farming/garden/Garden";
+import { RandomBeeHunt } from "features/farming/garden/components/Area/RandomBeeHunt";
+import { StateValues } from "./lib/gameMachine";
 
 const AUTO_SAVE_INTERVAL = 1000 * 30; // autosave every 30 seconds
 const SHOW_MODAL: Record<StateValues, boolean> = {
@@ -101,8 +104,10 @@ export const Game: React.FC = () => {
       </Modal>
 
       <ClockIssue show={gameState.context.offset > 0} />
+
       <Hud />
       <TeamDonation />
+      <RandomBeeHunt />
       <Crops />
       <Water />
       <Animals />
@@ -112,6 +117,8 @@ export const Game: React.FC = () => {
       <Town />
       <House />
       <Lore />
+      <Garden />
+      <Bees />
     </>
   );
 };

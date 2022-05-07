@@ -1,3 +1,4 @@
+import Decimal from "decimal.js-light";
 import { EVENTS, GameEvent } from "../events";
 import { GameState } from "../types/game";
 
@@ -23,8 +24,10 @@ export function processEvent({
     action: action as never,
   });
 
+  const balance = new Decimal(50);
+
   // Check if valid progress
-  const progress = newState.balance.sub(onChain.balance);
+  const progress = newState.balance.sub(balance);
 
   /**
    * Contract enforced SFL caps

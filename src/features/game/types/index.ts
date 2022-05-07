@@ -29,6 +29,7 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Iron Pickaxe": 304,
   Hammer: 305,
   Rod: 306,
+  Net: 307,
 
   "Sunflower Statue": 401,
   "Potato Statue": 402,
@@ -55,6 +56,11 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Farmer Bath": 423,
   "Homeless Tent": 424,
 
+  "Bee Hive": 423,
+  "Bee Box": 424,
+  "Sunflower Cake": 425,
+  Queen: 426,
+
   "Pumpkin Soup": 501,
   "Roasted Cauliflower": 502,
   Sauerkraut: 503,
@@ -69,6 +75,11 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   Cow: 607,
   Pig: 608,
   Sheep: 609,
+
+  Bee: 610,
+  Drone: 611,
+  Honey: 612,
+  Pollen: 613,
 
   "Green Thumb": 701,
   "Barn Manager": 702,

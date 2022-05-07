@@ -1,9 +1,9 @@
 import React from "react";
 
 import { Routes, Route, HashRouter } from "react-router-dom";
+import { Goblins } from "./Goblins";
 
 import { Humans } from "./Humans";
-import { Goblins } from "./Goblins";
 
 export const Session: React.FC = () => {
   // Switch between humans and goblins using react router

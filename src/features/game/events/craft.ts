@@ -1,5 +1,6 @@
 import Decimal from "decimal.js-light";
 import {
+  BEES,
   CraftableItem,
   CraftableName,
   CRAFTABLES,
@@ -24,6 +25,7 @@ const VALID_ITEMS = Object.keys({
   ...TOOLS,
   ...SEEDS(),
   ...FOODS(),
+  ...BEES,
 }) as CraftableName[];
 
 function isCraftable(
