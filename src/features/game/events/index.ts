@@ -7,12 +7,18 @@ import { mineStone, StoneMineAction } from "./stoneMine";
 import { mineIron, IronMineAction } from "./ironMine";
 import { chop, ChopAction } from "./chop";
 import { openReward, OpenRewardAction } from "./rewarded";
-import { PollenAction, Pollinate } from "./harvestPollen";
-import { collectBee, CollectBeeAction } from "./collectBee";
-import { openFlowerReward, OpenFlowerRewardAction } from "./flowerRewarded";
-import { harvestHoney, WorkAction } from "./sendDrone";
-import { HoneyAction, makeHoney } from "./makeHoney";
+import { PollenAction, Pollinate } from "./bees/harvestPollen";
+import { collectBee, CollectBeeAction } from "./bees/collectBee";
+import {
+  openFlowerReward,
+  OpenFlowerRewardAction,
+} from "./bees/flowerRewarded";
+import { harvestHoney, WorkAction } from "./bees/sendDrone";
+import { HoneyAction, makeHoney } from "./bees/makeHoney";
 import { GameState } from "../types/game";
+import { incubation, QueenDepositAction } from "./bees/depositQueen";
+import { feedQueen, FeedQueenAction } from "./bees/feedQueen";
+import { QueenRetireAction, retireQueen } from "./bees/retireQueen";
 
 export type GameEvent =
   | CraftAction
@@ -28,7 +34,10 @@ export type GameEvent =
   | CollectBeeAction
   | OpenFlowerRewardAction
   | WorkAction
-  | HoneyAction;
+  | HoneyAction
+  | QueenDepositAction
+  | FeedQueenAction
+  | QueenRetireAction;
 
 type EventName = Extract<GameEvent, { type: string }>["type"];
 
@@ -58,4 +67,7 @@ export const EVENTS: Handlers = {
   "flower.rewarded": openFlowerReward,
   "drone.working": harvestHoney,
   "honey.harvested": makeHoney,
+  "queen.deposited": incubation,
+  "queen.feeded": feedQueen,
+  "queen.retired": retireQueen,
 };

@@ -5,7 +5,7 @@ import {
   GameState,
   Inventory,
   InventoryItemName,
-} from "../types/game";
+} from "../../types/game";
 
 export enum POLLINATE_ERRORS {
   MISSING_BEE = "No bee",

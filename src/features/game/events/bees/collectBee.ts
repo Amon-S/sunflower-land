@@ -1,6 +1,7 @@
 import Decimal from "decimal.js-light";
-import { GameState } from "../types/game";
-import { Bee } from "../types/craftables";
+import { Bee } from "features/game/types/craftables";
+import { GameState } from "features/game/types/game";
+
 const bees: Record<number, Bee> = {
   0: "Bee",
 };

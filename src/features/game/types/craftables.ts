@@ -444,6 +444,7 @@ export const BEES: Record<HiveBee, CraftableItem> = {
 export const BEE_ITEMS: Record<BeeItem, CraftableItem> = {
   Queen: {
     name: "Queen",
+    workTime: 60,
     description: "Earn an extra 5 bees per week",
     // section: Section["Bee Hive"],
   },

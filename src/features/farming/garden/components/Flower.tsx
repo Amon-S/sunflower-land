@@ -23,7 +23,7 @@ import {
   getRequiredBeeAmount,
   COOLDOWN_LIST,
   getGivenPollen,
-} from "features/game/events/harvestPollen";
+} from "features/game/events/bees/harvestPollen";
 
 import { getTimeLeft } from "lib/utils/time";
 import { ProgressBar } from "components/ui/ProgressBar";

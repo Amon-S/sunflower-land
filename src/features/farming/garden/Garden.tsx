@@ -34,8 +34,8 @@ export const Garden: React.FC = () => {
           style={{
             height: `${GRID_WIDTH_PX * 1.5}px`,
             width: `${GRID_WIDTH_PX * 1.5}px`,
-            left: `${GRID_WIDTH_PX * -9.85}px`,
-            top: `${GRID_WIDTH_PX * -8.5}px`,
+            left: `${GRID_WIDTH_PX * -7}px`,
+            top: `${GRID_WIDTH_PX * -3}px`,
           }}
         >
           <Flower flowerIndex={0} />

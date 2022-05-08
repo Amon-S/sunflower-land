@@ -3,21 +3,23 @@ import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 
 import hiveCell from "assets/icons/hiveCell.png";
+import queen from "assets/animals/bees/queen2.gif";
 import { getTimeLeft, secondsToMidString } from "lib/utils/time";
 
 import { ProgressBar } from "components/ui/ProgressBar";
 import { InnerPanel } from "components/ui/Panel";
 
-import { HiveCell } from "features/game/types/game";
+import { QueenChamber } from "features/game/types/game";
 
 import { addNoise, RandomID } from "lib/images";
 
 import classnames from "classnames";
 import { CELL_LIFECYCLE } from "features/farming/bees/lib/cellPlant";
-import { BEES } from "features/game/types/craftables";
+import { BEE_ITEMS } from "features/game/types/craftables";
+import { EnergyBar } from "components/ui/EnergyBar";
 
 interface Props {
-  cell?: HiveCell;
+  cell?: QueenChamber;
   className?: string;
   showbeeDetails?: boolean;
 }
@@ -44,7 +46,7 @@ const Ready: React.FC<{ image: string; className: string }> = ({
   );
 };
 
-export const InterCell: React.FC<Props> = ({
+export const InterQueenCell: React.FC<Props> = ({
   cell,
   className,
   showbeeDetails,
@@ -66,10 +68,19 @@ export const InterCell: React.FC<Props> = ({
     return <img src={hiveCell} className={classnames("w-full", className)} />;
   }
 
-  const bee = BEES[cell.worker];
+  if (cell.worker == "Queen") {
+    return (
+      <>
+        <EnergyBar energyAmount={cell.energy} />{" "}
+        <img src={queen} className={classnames("w-full ", className)} />{" "}
+      </>
+    );
+  }
+
+  const bee = BEE_ITEMS[cell.worker];
   const time = bee.workTime as number;
-  const lifecycle = CELL_LIFECYCLE[cell.worker];
-  const timeLeft = getTimeLeft(cell.taskStart, time);
+  const lifecycle = CELL_LIFECYCLE["Queen"];
+  const timeLeft = getTimeLeft(cell.taskStart as number, time);
 
   // Seedling
   if (timeLeft > 0) {
@@ -82,6 +93,7 @@ export const InterCell: React.FC<Props> = ({
           src={isAlmostReady ? lifecycle.almost : lifecycle.initial}
           className={classnames("w-full", className)}
         />
+
         <div className="absolute w-full -bottom-4 z-10">
           <ProgressBar percentage={percentage} seconds={timeLeft} />
         </div>

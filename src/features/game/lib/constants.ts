@@ -28,6 +28,7 @@ export const INITIAL_STOCK: Inventory = {
   //test bee stock
   Net: new Decimal(20),
   Drone: new Decimal(10),
+  Queen: new Decimal(1),
 };
 
 export const INITIAL_FIELDS: GameState["fields"] = {
@@ -146,13 +147,15 @@ export const INITIAL_GOLD: GameState["gold"] = {
   },
 };
 
+export const INITIAL_CHAMBER: GameState["queenChamber"] = {};
+
 export const INITIAL_FARM: GameState = {
   balance: new Decimal(50),
   fields: INITIAL_FIELDS,
 
   flowers: INITIAL_FLOWERS,
   hiveCells: INITIAL_CELLS,
-
+  queenChamber: INITIAL_CHAMBER,
   inventory: {
     Sunflower: new Decimal(5),
     Potato: new Decimal(12),
@@ -161,9 +164,11 @@ export const INITIAL_FARM: GameState = {
     Sauerkraut: new Decimal(1),
     Axe: new Decimal(1),
 
+    "Chicken Coop": new Decimal(1),
+    Bee: new Decimal(300),
+    Pollen: new Decimal(100),
+    Honey: new Decimal(500),
     Queen: new Decimal(1),
-    Bee: new Decimal(10),
-    Pollen: new Decimal(10),
   },
   stock: INITIAL_STOCK,
   trees: INITIAL_TREES,
@@ -177,10 +182,11 @@ export const INITIAL_FARM: GameState = {
 };
 
 export const EMPTY: GameState = {
-  balance: new Decimal(50),
+  balance: new Decimal(100),
   fields: {},
   flowers: INITIAL_FLOWERS,
   hiveCells: INITIAL_CELLS,
+  queenChamber: INITIAL_CHAMBER,
   inventory: {},
   stock: {},
   trees: INITIAL_TREES,

@@ -4,17 +4,19 @@ import classNames from "classnames";
 
 import selectBox from "assets/ui/select/select_box.png";
 import cancel from "assets/icons/cancel.png";
+import eatIcon from "assets/icons/eatIcon.jpg";
 
 import { Context } from "features/game/GameProvider";
 import { InventoryItemName } from "features/game/types/game";
 
 import { ITEM_DETAILS } from "features/game/types/images";
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
-import { InterCell } from "./InterCell";
-import { beesAudio, honeyHarvestAudio } from "lib/utils/sfx";
+import { InterQueenCell } from "./InterQueenCell";
+import { beesAudio } from "lib/utils/sfx";
 import { HealthBar } from "components/ui/HealthBar";
-
-import { BEES, HiveBee } from "features/game/types/craftables";
+import { BeeItem } from "features/game/types/craftables";
+import { Button } from "components/ui/Button";
+import { ToastContext } from "features/game/toast/ToastQueueProvider";
 
 const POPOVER_TIME_MS = 1000;
 
@@ -25,13 +27,13 @@ interface Props {
   onboarding?: boolean;
 }
 
-export const isHoneyReady = (
+export const isNewBeeReady = (
   now: number,
   workerAt: number,
-  harvestSeconds: number
-) => now - workerAt > harvestSeconds * 1000;
+  workSeconds: number
+) => now - workerAt > workSeconds * 1000;
 
-export const Cell: React.FC<Props> = ({
+export const QueenCell: React.FC<Props> = ({
   selectedItem,
   className,
   cellIndex,
@@ -43,7 +45,14 @@ export const Cell: React.FC<Props> = ({
   const [showPopover, setShowPopover] = useState(false);
   const [game] = useActor(gameService);
   const clickedAt = useRef<number>(0);
-  const cell = game.context.state.hiveCells[cellIndex];
+  const { setToast } = useContext(ToastContext);
+  const [
+    {
+      context: { state },
+    },
+  ] = useActor(gameService);
+
+  const cell = state.queenChamber[cellIndex];
 
   const displayPopover = async (element: JSX.Element) => {
     setPopover(element);
@@ -54,16 +63,12 @@ export const Cell: React.FC<Props> = ({
   };
 
   const handleMouseHover = () => {
-    // check field if there is a crop
+    // check field if there is a queen
     if (cell) {
-      const bee = cell.worker;
-      const time = BEES[bee].workTime;
-      const now = Date.now();
-      const isReady = isHoneyReady(now, cell.taskStart, time as number);
-      const isJustWorked = now - (time as number) < 1000;
+      const queen = cell.worker;
 
-      // show details if cell is NOT ready and NOT just planted
-      if (!isReady && !isJustWorked) {
+      // show details if queen is deposited
+      if (queen) {
         setShowWorkerDetails(true);
       }
     }
@@ -73,6 +78,21 @@ export const Cell: React.FC<Props> = ({
 
   const handleMouseLeave = () => {
     setShowWorkerDetails(false);
+  };
+
+  const retireQueen = () => {
+    gameService.send("queen.retired", {
+      index: cellIndex,
+    });
+    console.log("queen retired");
+  };
+
+  const feedQueen = () => {
+    gameService.send("queen.feeded", {
+      index: cellIndex,
+    });
+
+    setToast({ content: "HONEY -$ 5" });
   };
 
   const onClick = () => {
@@ -87,7 +107,7 @@ export const Cell: React.FC<Props> = ({
     // Plant
     if (!cell) {
       try {
-        gameService.send("drone.working", {
+        gameService.send("queen.deposited", {
           index: cellIndex,
           item: selectedItem,
         });
@@ -97,39 +117,19 @@ export const Cell: React.FC<Props> = ({
         displayPopover(
           <div className="flex items-center justify-center text-xs text-white text-shadow overflow-visible">
             <img
-              src={ITEM_DETAILS[selectedItem as HiveBee].image}
+              src={ITEM_DETAILS[selectedItem as BeeItem].image}
               className="w-4 mr-1"
             />
-            <span>-1</span>
+            <span>Queen deposited</span>
           </div>
         );
       } catch (e: any) {
         // TODO - catch more elaborate errors
         displayPopover(<img className="w-5" src={cancel} />);
       }
-
+      console.log(cell);
       return;
     }
-
-    try {
-      gameService.send("honey.harvested", {
-        index: cellIndex,
-        item: selectedItem,
-      });
-      honeyHarvestAudio.play();
-
-      displayPopover(
-        <div className="flex items-center justify-center text-xs text-white text-shadow overflow-visible">
-          <img src={ITEM_DETAILS["Honey"].image} className="w-4 mr-1" />
-          <span>{`+${cell.multiplier || 1}`}</span>
-        </div>
-      );
-    } catch (e: any) {
-      // TODO - catch more elaborate errors
-      displayPopover(<img className="w-5" src={cancel} />);
-    }
-
-    setTouchCount(0);
   };
 
   const playing = game.matches("playing") || game.matches("autosaving");
@@ -140,12 +140,12 @@ export const Cell: React.FC<Props> = ({
       onMouseLeave={handleMouseLeave}
       className={classNames("relative group", className)}
       style={{
-        width: `${GRID_WIDTH_PX * 1.2}px`,
-        height: `${GRID_WIDTH_PX * 1.2}px`,
+        width: `${GRID_WIDTH_PX * 3}px`,
+        height: `${GRID_WIDTH_PX * 3}px`,
       }}
     >
-      <InterCell
-        className="absolute bottom-0"
+      <InterQueenCell
+        className="relative   -bottom-2"
         cell={cell}
         showbeeDetails={showWorkerDetail}
       />
@@ -162,6 +162,14 @@ export const Cell: React.FC<Props> = ({
         <HealthBar percentage={100 - touchCount * 50} />
       </div>
 
+      <div className="flex absolute -bottom-14">
+        <Button className="w-8 m-1" onClick={() => retireQueen()}>
+          <img src={cancel} alt="" />
+        </Button>
+        <Button className="w-8 m-1" onClick={() => feedQueen()}>
+          <img src={eatIcon} alt="" />
+        </Button>
+      </div>
       <div
         className={classNames(
           "transition-opacity absolute -bottom-2 w-full z-20 pointer-events-none flex justify-center",

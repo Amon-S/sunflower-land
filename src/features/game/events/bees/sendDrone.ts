@@ -1,7 +1,7 @@
 import Decimal from "decimal.js-light";
 import { screenTracker } from "lib/utils/screen";
-import { BEES, HiveBee } from "../types/craftables";
-import { GameState, Inventory, InventoryItemName } from "../types/game";
+import { BEES, HiveBee } from "../../types/craftables";
+import { GameState, Inventory, InventoryItemName } from "../../types/game";
 
 export type WorkAction = {
   type: "drone.working";
@@ -78,21 +78,21 @@ export function harvestHoney({
     throw new Error("Field does not exist");
   }
 
-  if (action.index > 3 && action.index < 6 && !state.inventory["Bee Box"]) {
+  if (action.index > 3 && !state.inventory["Bee Box"]) {
     throw new Error("Need to upgrade hive");
   }
 
   const cell = cells[action.index];
   if (cell) {
-    throw new Error("Crop is already planted");
+    throw new Error("Cell is full");
   }
 
   if (!action.item) {
-    throw new Error("No seed selected");
+    throw new Error("No drone selected");
   }
 
   if (!isBee(action.item)) {
-    throw new Error("Not a seed");
+    throw new Error("Not a drone");
   }
 
   const beeCount = state.inventory[action.item] || new Decimal(0);

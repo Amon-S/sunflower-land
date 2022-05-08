@@ -56,7 +56,7 @@ export const Navigation: React.FC = () => {
             <Route path="/farm/:id" element={<Humans key="farm" />} />
             <Route path="/visit/:id" element={<Humans key="visit" />} />
             {/* Fallback */}
-            <Route element={<Humans />} />
+            <Route element={<Humans key="farm" />} />
           </Routes>
         </HashRouter>
       ) : (

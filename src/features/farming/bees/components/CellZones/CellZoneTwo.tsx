@@ -9,9 +9,8 @@ export const CellZoneTwo: React.FC = () => {
     <div className="flex justify-center flex-col ">
       {/* Top row */}
       <div className="w3/5 flex justify-between ">
+        <Cell selectedItem={selectedItem} cellIndex={2} />
         <Cell selectedItem={selectedItem} cellIndex={3} />
-        <Cell selectedItem={selectedItem} cellIndex={4} />
-        <Cell selectedItem={selectedItem} cellIndex={5} />
       </div>
     </div>
   );

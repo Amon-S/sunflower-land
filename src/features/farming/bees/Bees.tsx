@@ -15,8 +15,8 @@ export const Bees: React.FC = () => {
       style={{
         height: `${GRID_WIDTH_PX * 5}px`,
         width: `${GRID_WIDTH_PX * 4.5}px`,
-        right: `calc(50% -  ${GRID_WIDTH_PX * -17}px)`,
-        top: `calc(50% -  ${GRID_WIDTH_PX * 34}px)`,
+        right: `calc(50% -  ${GRID_WIDTH_PX * 13.2}px)`,
+        top: `calc(50% -  ${GRID_WIDTH_PX * 39.5}px)`,
       }}
       className="absolute z-10"
     >

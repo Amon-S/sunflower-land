@@ -7,9 +7,11 @@ import { CellZoneTwo } from "./CellZones/CellZoneTwo";
 import queen from "assets/animals/bees/queenGif.gif";
 import drone from "assets/animals/bees/droneGif.gif";
 import { Modal } from "react-bootstrap";
-import { Panel } from "components/ui/Panel";
+import { OuterPanel, Panel } from "components/ui/Panel";
 import close from "assets/icons/close.png";
 import beeBox from "assets/buildings/beeHive.png";
+import { QueenZone } from "./CellZones/QueenZone";
+import { CellZoneThree } from "./CellZones/CellZoneThree";
 
 export const HoneyProd: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -29,6 +31,7 @@ export const HoneyProd: React.FC = () => {
         </div>
         <div className="flex   ">
           {/* Top row */}
+
           <div className=" flex flex-wrap h-fit mt-3 ">
             <CellZoneTwo />
           </div>
@@ -40,8 +43,8 @@ export const HoneyProd: React.FC = () => {
               style={{
                 width: `${GRID_WIDTH_PX * 0.75}px`,
                 height: `${GRID_WIDTH_PX * 0.75}px`,
-                right: `${GRID_WIDTH_PX * 5}px`,
-                top: `${GRID_WIDTH_PX * 1.75}px`,
+                right: `${GRID_WIDTH_PX * -0.1}px`,
+                top: `${GRID_WIDTH_PX * 1.55}px`,
               }}
             />
           ) : (
@@ -51,22 +54,19 @@ export const HoneyProd: React.FC = () => {
               style={{
                 width: `${GRID_WIDTH_PX * 0.75}px`,
                 height: `${GRID_WIDTH_PX * 0.75}px`,
-                left: `${GRID_WIDTH_PX * -3.25}px`,
+                right: `${GRID_WIDTH_PX * -0.1}px`,
                 top: `${GRID_WIDTH_PX * 1.75}px`,
               }}
             />
           )}
         </div>
+        <div className=" flex flex-wrap mt-3 ">
+          <CellZoneThree />
+        </div>
       </div>
-      <div
-        className="flex w2/5"
-        style={{
-          border: "1px solid black",
-          borderRadius: "15px",
-        }}
-      >
-        Queen Zone
-      </div>
+      <OuterPanel className="flex-1 w-2/5">
+        <QueenZone />
+      </OuterPanel>
       <Modal centered show={showModal} onHide={() => setShowModal(false)}>
         <Panel>
           <img

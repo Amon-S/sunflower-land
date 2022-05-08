@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { useActor } from "@xstate/react";
 import { Context } from "features/game/GameProvider";
 
-import { availableBee } from "features/game/events/collectBee";
+import { availableBee } from "features/game/events/bees/collectBee";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { Bee } from "features/game/types/craftables";
 import { beesAudio } from "lib/utils/sfx";

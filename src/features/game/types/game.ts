@@ -2,7 +2,7 @@ import { Decimal } from "decimal.js-light";
 import { GameEvent } from "../events";
 
 import { CropName, SeedName } from "./crops";
-import { CraftableName, Food, HiveBee } from "./craftables";
+import { BeeItem, CraftableName, Food, HiveBee } from "./craftables";
 import { ResourceName } from "./resources";
 import { SkillName } from "./skills";
 
@@ -84,6 +84,14 @@ export type HiveCell = {
   multiplier?: number;
 };
 
+export type QueenChamber = {
+  worker: BeeItem;
+  taskStart?: number;
+  energy: number;
+  maxEnergy: number;
+  active?: boolean;
+};
+
 export const FLOWERS: () => Record<FlowerName, Flower> = () => ({
   "White Flower": {
     name: "White Flower",
@@ -104,6 +112,7 @@ export interface GameState {
   balance: Decimal;
   fields: Fields;
 
+  queenChamber: Record<number, QueenChamber>;
   hiveCells: Record<number, HiveCell>;
   flowers: Record<number, Flower>;
 

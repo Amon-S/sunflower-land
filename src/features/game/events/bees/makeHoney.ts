@@ -1,7 +1,7 @@
-import { GameState, Inventory } from "../types/game";
+import { GameState, Inventory } from "../../types/game";
 import Decimal from "decimal.js-light";
 import { screenTracker } from "lib/utils/screen";
-import { BEES } from "../types/craftables";
+import { BEES } from "../../types/craftables";
 
 export type HoneyAction = {
   type: "honey.harvested";

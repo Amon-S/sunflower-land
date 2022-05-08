@@ -1,6 +1,6 @@
 import Decimal from "decimal.js-light";
+import { FLOWERS, GameState } from "features/game/types/game";
 
-import { FLOWERS, GameState } from "../types/game";
 import { COOLDOWN_LIST } from "./harvestPollen";
 
 export type OpenFlowerRewardAction = {
