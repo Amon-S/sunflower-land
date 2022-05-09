@@ -330,7 +330,7 @@ export const ITEM_DETAILS: Items = {
     image: queen,
   },
   "Sunflower Cake": {
-    ...BEE_ITEMS["Sunflower Cake"],
+    ...BLACKSMITH_ITEMS["Sunflower Cake"],
     image: sunflowerCake,
   },
 
