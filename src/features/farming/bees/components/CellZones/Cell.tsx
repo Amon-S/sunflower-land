@@ -12,7 +12,6 @@ import { ITEM_DETAILS } from "features/game/types/images";
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
 import { InterCell } from "./InterCell";
 import { beesAudio, honeyHarvestAudio } from "lib/utils/sfx";
-import { HealthBar } from "components/ui/HealthBar";
 
 import { BEES, HiveBee } from "features/game/types/craftables";
 
@@ -140,8 +139,8 @@ export const Cell: React.FC<Props> = ({
       onMouseLeave={handleMouseLeave}
       className={classNames("relative group", className)}
       style={{
-        width: `${GRID_WIDTH_PX * 1.2}px`,
-        height: `${GRID_WIDTH_PX * 1.2}px`,
+        width: `${GRID_WIDTH_PX * 1.8}px`,
+        height: `${GRID_WIDTH_PX * 1.8}px`,
       }}
     >
       <InterCell
@@ -149,19 +148,6 @@ export const Cell: React.FC<Props> = ({
         cell={cell}
         showbeeDetails={showWorkerDetail}
       />
-
-      <div
-        className={classNames(
-          "transition-opacity pointer-events-none absolute -bottom-2 left-1",
-          {
-            "opacity-100": touchCount > 0,
-            "opacity-0": touchCount === 0,
-          }
-        )}
-      >
-        <HealthBar percentage={100 - touchCount * 50} />
-      </div>
-
       <div
         className={classNames(
           "transition-opacity absolute -bottom-2 w-full z-20 pointer-events-none flex justify-center",

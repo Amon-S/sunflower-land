@@ -2,22 +2,15 @@ import { screenTracker } from "lib/utils/screen";
 import { BeeItem, BEE_ITEMS } from "../../types/craftables";
 import { GameState, Inventory, InventoryItemName } from "../../types/game";
 
-export type QueenDepositAction = {
-  type: "queen.deposited";
+export type BeeWorkerAction = {
+  type: "workerBee.producing";
   item?: InventoryItemName;
   index: number;
 };
 
-// Bees which are implemented
-const VALID_WORKERS: InventoryItemName[] = ["Queen"];
-
-export function isBee(bee: InventoryItemName) {
-  return VALID_WORKERS.includes(bee);
-}
-
 type Options = {
   state: GameState;
-  action: QueenDepositAction;
+  action: BeeWorkerAction;
   workedAt?: number;
 };
 
@@ -28,11 +21,12 @@ type GetWorkedAtArgs = {
 };
 
 /**
- * Based on boosts, how long a cell will take to make honey
+ * Based on boosts, how long the queen will take to make worker bees
  */
 export const getBeeTime = (bee: BeeItem, inventory: Inventory) => {
   const seconds = BEE_ITEMS[bee].workTime as number;
 
+  //boosts go here
   return seconds;
 };
 
@@ -62,43 +56,47 @@ function getMultiplier({ bee, inventory }: GetCellArgs): number {
   return multiplier;
 }
 
-export function incubation({ state, action, workedAt = Date.now() }: Options) {
+export function produceWorkers({
+  state,
+  action,
+  workedAt = Date.now(),
+}: Options) {
   const cells = { ...state.queenChamber };
+
+  if (action.index < 0) {
+    throw new Error("Field does not exist");
+  }
 
   if (!Number.isInteger(action.index)) {
     throw new Error("Field does not exist");
   }
 
-  if (!state.inventory["Queen"]) {
-    throw new Error("Need a Queen first");
-  }
-
   const cell = cells[action.index];
-  if (cell) {
-    throw new Error("Crop is already planted");
+
+  if (cell.active) {
+    throw new Error("Cell is currently active");
   }
 
-  if (!action.item) {
-    throw new Error("No queen selected");
-  }
-
-  if (!isBee(action.item)) {
-    throw new Error("Not a queen");
+  if (cell.energy < 1) {
+    throw new Error("Not enough energy");
   }
 
   if (!screenTracker.calculate()) {
-    throw new Error("Invalid bee");
+    throw new Error("Invalid cell");
   }
 
   const newCells = cells;
 
-  const bee = action.item.split(" ")[0] as BeeItem;
+  const bee = cell.worker;
+  const currentEnergy = cell.energy;
 
   newCells[action.index] = {
-    taskStart: 0,
-    worker: bee,
-    energy: 0,
+    taskStart: getWorkedAt({ bee, inventory: state.inventory, workedAt }),
+    energy: currentEnergy - 1,
     maxEnergy: 5,
+    worker: bee,
+    active: true,
+    multiplier: getMultiplier({ bee, inventory: state.inventory }),
     reward: "Bee",
   };
 

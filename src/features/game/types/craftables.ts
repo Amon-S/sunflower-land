@@ -79,7 +79,8 @@ export type BlacksmithItem =
   | "Egg Basket"
   | "Farmer Bath"
   | "Bee Hive"
-  | "Bee Box";
+  | "Bee Box"
+  | "Sunflower Cake";
 
 export type BarnItem =
   | "Farm Cat"
@@ -96,7 +97,7 @@ export type MarketItem =
   | "Mysterious Parsnip"
   | "Carrot Sword";
 
-export type BeeItem = "Queen" | "Sunflower Cake";
+export type BeeItem = "Queen";
 
 export type LimitedItemName =
   | BlacksmithItem
@@ -340,6 +341,10 @@ export const BLACKSMITH_ITEMS: Record<BlacksmithItem, LimitedItem> = {
     name: "Bee Box",
     description: "Boost honey production",
   },
+  "Sunflower Cake": {
+    name: "Sunflower Cake",
+    description: "Give an energy boost to your farm animals",
+  },
 };
 
 export const MARKET_ITEMS: Record<MarketItem, LimitedItem> = {
@@ -444,13 +449,9 @@ export const BEES: Record<HiveBee, CraftableItem> = {
 export const BEE_ITEMS: Record<BeeItem, CraftableItem> = {
   Queen: {
     name: "Queen",
-    workTime: 60,
+    workTime: 10,
     description: "Earn an extra 5 bees per week",
     // section: Section["Bee Hive"],
-  },
-  "Sunflower Cake": {
-    name: "Sunflower Cake",
-    description: "Give an energy boost to your farm animals",
   },
 };
 

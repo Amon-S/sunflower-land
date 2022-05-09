@@ -71,7 +71,7 @@ export const InterCell: React.FC<Props> = ({
   const lifecycle = CELL_LIFECYCLE[cell.worker];
   const timeLeft = getTimeLeft(cell.taskStart, time);
 
-  // Seedling
+  // Work start
   if (timeLeft > 0) {
     const percentage = 100 - (timeLeft / time) * 100;
     const isAlmostReady = percentage >= 50;
@@ -82,7 +82,7 @@ export const InterCell: React.FC<Props> = ({
           src={isAlmostReady ? lifecycle.almost : lifecycle.initial}
           className={classnames("w-full", className)}
         />
-        <div className="absolute w-full -bottom-4 z-10">
+        <div className="absolute w-full -bottom-4 z-10 border-red-500">
           <ProgressBar percentage={percentage} seconds={timeLeft} />
         </div>
         <InnerPanel

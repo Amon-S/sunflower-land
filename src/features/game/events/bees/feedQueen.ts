@@ -53,6 +53,10 @@ export function feedQueen({ state, action, energy }: Options) {
     throw new Error("Queen is full" + cellEnergy);
   }
 
+  if (cell.active) {
+    throw new Error("Queen is working");
+  }
+
   if (action.item == "Honey") {
     throw new Error("Select honey to feed Queen");
   }
@@ -66,6 +70,7 @@ export function feedQueen({ state, action, energy }: Options) {
     worker: bee,
     energy: cellEnergy + 1,
     maxEnergy: 5,
+    reward: "Bee",
   };
 
   const multiplier = 1;

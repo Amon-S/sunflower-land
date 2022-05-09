@@ -68,7 +68,13 @@ export type Inventory = Partial<Record<InventoryItemName, Decimal>>;
 
 export type Fields = Record<number, FieldItem>;
 
-export type FlowerName = "White Flower" | "Red Flower";
+export type FlowerName =
+  | "White Flower"
+  | "Red Flower"
+  | "Purple Flower"
+  | "Blue Flower"
+  | "Black Flower"
+  | "Gold Flower";
 
 export type Flower = {
   name: FlowerName;
@@ -90,6 +96,8 @@ export type QueenChamber = {
   energy: number;
   maxEnergy: number;
   active?: boolean;
+  multiplier?: number;
+  reward: "Bee" | "Drone";
 };
 
 export const FLOWERS: () => Record<FlowerName, Flower> = () => ({
@@ -99,6 +107,22 @@ export const FLOWERS: () => Record<FlowerName, Flower> = () => ({
   },
   "Red Flower": {
     name: "Red Flower",
+    pollinatedAt: 0,
+  },
+  "Purple Flower": {
+    name: "Purple Flower",
+    pollinatedAt: 0,
+  },
+  "Blue Flower": {
+    name: "Blue Flower",
+    pollinatedAt: 0,
+  },
+  "Black Flower": {
+    name: "Black Flower",
+    pollinatedAt: 0,
+  },
+  "Gold Flower": {
+    name: "Gold Flower",
     pollinatedAt: 0,
   },
 });

@@ -14,16 +14,27 @@ export enum POLLINATE_ERRORS {
   STILL_GROWING = "Flower is still growing",
 }
 
-const FlowerList: FlowerName[] = ["White Flower", "Red Flower"];
+const FlowerList: FlowerName[] = [
+  "White Flower",
+  "Red Flower",
+  "Purple Flower",
+  "Blue Flower",
+  "Black Flower",
+  "Gold Flower",
+];
 
-const getRandomBeeName = (): FlowerName => {
+const getRandomFlower = (): FlowerName => {
   const randomNum = Math.floor(Math.random() * FlowerList.length);
   return FlowerList[randomNum];
 };
 
 export const COOLDOWN_LIST = {
-  "White Flower": 10,
-  "Red Flower": 30 * 60,
+  "White Flower": 5,
+  "Red Flower": 10,
+  "Purple Flower": 15,
+  "Blue Flower": 20,
+  "Black Flower": 25,
+  "Gold Flower": 30,
 };
 
 export function canPollinate(flower: Flower, now: number = Date.now()) {
@@ -49,7 +60,7 @@ export function getRequiredBeeAmount(
   inventory: Inventory,
   flowerName: FlowerName
 ) {
-  if (flowerName == "Red Flower") {
+  if (flowerName != "White Flower") {
     return new Decimal(2);
   }
 
@@ -57,11 +68,10 @@ export function getRequiredBeeAmount(
 }
 
 export function getGivenPollen(flower: FlowerName) {
-  if (flower == "Red Flower") {
+  if (flower != "White Flower") {
     return new Decimal(5);
-  } else if (flower == "White Flower") {
-    return new Decimal(1);
   }
+  return new Decimal(1);
 }
 
 export type PollenAction = {
@@ -107,7 +117,7 @@ export function Pollinate({
   }
 
   const pollenAmount = state.inventory.Pollen || new Decimal(0);
-  const newBeeName = getRandomBeeName();
+  const newBeeName = getRandomFlower();
   const addedAmount = getGivenPollen(flower.name) as Decimal;
   const honeyAmount = state.inventory.Honey || new Decimal(0);
 

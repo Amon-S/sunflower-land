@@ -1,13 +1,12 @@
-import React, { useEffect, useRef } from "react";
-
-import classNames from "classnames";
+import React, { useEffect, useRef, useState } from "react";
 
 import hiveCell from "assets/icons/hiveCell.png";
 import queen from "assets/animals/bees/queen2.gif";
-import { getTimeLeft, secondsToMidString } from "lib/utils/time";
+import bees from "assets/animals/bees//beeGif.gif";
+import drone from "assets/animals/bees/droneGif.gif";
+import { getTimeLeft } from "lib/utils/time";
 
 import { ProgressBar } from "components/ui/ProgressBar";
-import { InnerPanel } from "components/ui/Panel";
 
 import { QueenChamber } from "features/game/types/game";
 
@@ -46,15 +45,13 @@ const Ready: React.FC<{ image: string; className: string }> = ({
   );
 };
 
-export const InterQueenCell: React.FC<Props> = ({
-  cell,
-  className,
-  showbeeDetails,
-}) => {
+export const InterQueenCell: React.FC<Props> = ({ cell, className }) => {
   const [_, setTimer] = React.useState<number>(0);
   const setHarvestTime = React.useCallback(() => {
     setTimer((count) => count + 1);
   }, []);
+
+  const [showWorkerDetail, setShowWorkerDetails] = useState(false);
 
   React.useEffect(() => {
     if (cell) {
@@ -64,59 +61,67 @@ export const InterQueenCell: React.FC<Props> = ({
     }
   }, [cell, setHarvestTime]);
 
+  const handleMouseHover = () => {
+    console.log("handleMouseHover cell doesnt exist");
+    // check field if there is a queen
+    if (cell) {
+      const queen = cell.worker;
+
+      console.log("handleMouseHover cell exist");
+      // show details if queen is deposited
+      if (queen) {
+        setShowWorkerDetails(true);
+      }
+    }
+
+    return;
+  };
+
+  const handleMouseLeave = () => {
+    setShowWorkerDetails(false);
+  };
+
   if (!cell) {
     return <img src={hiveCell} className={classnames("w-full", className)} />;
   }
 
-  if (cell.worker == "Queen") {
+  if (cell.worker == "Queen" && !cell.active) {
     return (
       <>
-        <EnergyBar energyAmount={cell.energy} />{" "}
+        <EnergyBar energyAmount={cell.energy} />
         <img src={queen} className={classnames("w-full ", className)} />{" "}
       </>
     );
   }
-
   const bee = BEE_ITEMS[cell.worker];
-  const time = bee.workTime as number;
+  const time = BEE_ITEMS["Queen"].workTime as number;
   const lifecycle = CELL_LIFECYCLE["Queen"];
   const timeLeft = getTimeLeft(cell.taskStart as number, time);
+  const percentage = 100 - (timeLeft / time) * 100;
+  const isAlmostReady = percentage >= 50;
 
-  // Seedling
-  if (timeLeft > 0) {
-    const percentage = 100 - (timeLeft / time) * 100;
-    const isAlmostReady = percentage >= 50;
-
+  if (cell.active && timeLeft > 0) {
     return (
-      <div className="relative w-full h-full">
-        <img
-          src={isAlmostReady ? lifecycle.almost : lifecycle.initial}
-          className={classnames("w-full", className)}
-        />
-
-        <div className="absolute w-full -bottom-4 z-10">
+      <>
+        <EnergyBar energyAmount={cell.energy} />
+        <div className="absolute left-28 bottom-54">
+          <span>{cell.reward}</span>
           <ProgressBar percentage={percentage} seconds={timeLeft} />
         </div>
-        <InnerPanel
-          className={classNames(
-            "ml-10 transition-opacity absolute whitespace-nowrap sm:opacity-0 bottom-5 w-fit left-1 z-20 pointer-events-none",
-            {
-              "opacity-100": showbeeDetails,
-              "opacity-0": !showbeeDetails,
-            }
-          )}
-        >
-          <div className="flex flex-col text-xxs text-white text-shadow ml-2 mr-2">
-            <div className="flex flex-1 items-center justify-center">
-              <img src={lifecycle.ready} className="w-4 mr-1" />
-              <span>{cell.worker}</span>
-            </div>
-            <span className="flex-1">{secondsToMidString(timeLeft)}</span>
-          </div>
-        </InnerPanel>
-      </div>
+        <img
+          onMouseEnter={handleMouseHover}
+          onMouseLeave={handleMouseLeave}
+          src={isAlmostReady ? lifecycle.almost : lifecycle.initial}
+          className={classnames("w-full bottom-4 ", className)}
+        />
+      </>
     );
   }
 
-  return <Ready className={className as string} image={lifecycle.ready} />;
+  return (
+    <Ready
+      className={className as string}
+      image={cell.reward == "Bee" ? bees : drone}
+    />
+  );
 };

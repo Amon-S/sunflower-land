@@ -5,6 +5,8 @@ import classNames from "classnames";
 import selectBox from "assets/ui/select/select_box.png";
 import cancel from "assets/icons/cancel.png";
 import eatIcon from "assets/icons/eatIcon.jpg";
+import bee from "assets/animals/bees/bee.png";
+import drone from "assets/animals/bees/drone.png";
 
 import { Context } from "features/game/GameProvider";
 import { InventoryItemName } from "features/game/types/game";
@@ -13,7 +15,7 @@ import { ITEM_DETAILS } from "features/game/types/images";
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
 import { InterQueenCell } from "./InterQueenCell";
 import { beesAudio } from "lib/utils/sfx";
-import { HealthBar } from "components/ui/HealthBar";
+
 import { BeeItem } from "features/game/types/craftables";
 import { Button } from "components/ui/Button";
 import { ToastContext } from "features/game/toast/ToastQueueProvider";
@@ -45,14 +47,10 @@ export const QueenCell: React.FC<Props> = ({
   const [showPopover, setShowPopover] = useState(false);
   const [game] = useActor(gameService);
   const clickedAt = useRef<number>(0);
-  const { setToast } = useContext(ToastContext);
-  const [
-    {
-      context: { state },
-    },
-  ] = useActor(gameService);
 
-  const cell = state.queenChamber[cellIndex];
+  const { setToast } = useContext(ToastContext);
+
+  const cell = game.context.state.queenChamber[cellIndex];
 
   const displayPopover = async (element: JSX.Element) => {
     setPopover(element);
@@ -63,10 +61,12 @@ export const QueenCell: React.FC<Props> = ({
   };
 
   const handleMouseHover = () => {
+    console.log("handleMouseHover cell doesnt exist");
     // check field if there is a queen
     if (cell) {
       const queen = cell.worker;
 
+      console.log("handleMouseHover cell exist");
       // show details if queen is deposited
       if (queen) {
         setShowWorkerDetails(true);
@@ -92,7 +92,23 @@ export const QueenCell: React.FC<Props> = ({
       index: cellIndex,
     });
 
-    setToast({ content: "HONEY -$ 5" });
+    setToast({ content: "HONEY -5" });
+  };
+
+  const produceWorkers = () => {
+    gameService.send("workerBee.producing", {
+      index: cellIndex,
+    });
+
+    setToast({ content: "Queen Working..." });
+  };
+
+  const produceDrones = () => {
+    gameService.send("droneBee.producing", {
+      index: cellIndex,
+    });
+
+    setToast({ content: "Queen Working..." });
   };
 
   const onClick = () => {
@@ -127,7 +143,39 @@ export const QueenCell: React.FC<Props> = ({
         // TODO - catch more elaborate errors
         displayPopover(<img className="w-5" src={cancel} />);
       }
-      console.log(cell);
+      setTouchCount(0);
+
+      return;
+    }
+
+    if (cell.active) {
+      try {
+        gameService.send("harvest.bees", {
+          index: cellIndex,
+          item: selectedItem,
+        });
+        setToast({ content: ` +12 Bees` });
+      } catch (e: any) {
+        // TODO - catch more elaborate errors
+        displayPopover(<img className="w-5" src={cancel} />);
+      }
+      if (cell.reward == "Drone") {
+        try {
+          gameService.send("harvest.drones", {
+            index: cellIndex,
+            item: selectedItem,
+          });
+          setToast({ content: `+3 Drones` });
+        } catch (e: any) {
+          // TODO - catch more elaborate errors
+          displayPopover(<img className="w-5" src={cancel} />);
+        }
+        setTouchCount(0);
+        return;
+      }
+
+      setTouchCount(0);
+
       return;
     }
   };
@@ -144,23 +192,7 @@ export const QueenCell: React.FC<Props> = ({
         height: `${GRID_WIDTH_PX * 3}px`,
       }}
     >
-      <InterQueenCell
-        className="relative   -bottom-2"
-        cell={cell}
-        showbeeDetails={showWorkerDetail}
-      />
-
-      <div
-        className={classNames(
-          "transition-opacity pointer-events-none absolute -bottom-2 left-1",
-          {
-            "opacity-100": touchCount > 0,
-            "opacity-0": touchCount === 0,
-          }
-        )}
-      >
-        <HealthBar percentage={100 - touchCount * 50} />
-      </div>
+      <InterQueenCell className="relative   -bottom-2" cell={cell} />
 
       <div className="flex absolute -bottom-14">
         <Button className="w-8 m-1" onClick={() => retireQueen()}>
@@ -170,6 +202,17 @@ export const QueenCell: React.FC<Props> = ({
           <img src={eatIcon} alt="" />
         </Button>
       </div>
+
+      <div className="flex absolute -bottom-28">
+        <Button className="w-8 m-1" onClick={() => produceWorkers()}>
+          <img src={bee} alt="" />
+        </Button>
+
+        <Button className="w-8 m-1" onClick={() => produceDrones()}>
+          <img src={drone} alt="" />
+        </Button>
+      </div>
+
       <div
         className={classNames(
           "transition-opacity absolute -bottom-2 w-full z-20 pointer-events-none flex justify-center",

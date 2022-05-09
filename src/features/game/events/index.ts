@@ -19,6 +19,10 @@ import { GameState } from "../types/game";
 import { incubation, QueenDepositAction } from "./bees/depositQueen";
 import { feedQueen, FeedQueenAction } from "./bees/feedQueen";
 import { QueenRetireAction, retireQueen } from "./bees/retireQueen";
+import { BeeWorkerAction, produceWorkers } from "./bees/produceWorkers";
+import { harvestBee, HarvestBeeAction } from "./bees/harvestBees";
+import { DroneWorkerAction, produceDrones } from "./bees/produceDrones";
+import { HarvestDroneAction, harvestDrones } from "./bees/harvestDrones";
 
 export type GameEvent =
   | CraftAction
@@ -37,7 +41,11 @@ export type GameEvent =
   | HoneyAction
   | QueenDepositAction
   | FeedQueenAction
-  | QueenRetireAction;
+  | QueenRetireAction
+  | BeeWorkerAction
+  | HarvestBeeAction
+  | DroneWorkerAction
+  | HarvestDroneAction;
 
 type EventName = Extract<GameEvent, { type: string }>["type"];
 
@@ -70,4 +78,8 @@ export const EVENTS: Handlers = {
   "queen.deposited": incubation,
   "queen.feeded": feedQueen,
   "queen.retired": retireQueen,
+  "workerBee.producing": produceWorkers,
+  "harvest.bees": harvestBee,
+  "droneBee.producing": produceDrones,
+  "harvest.drones": harvestDrones,
 };

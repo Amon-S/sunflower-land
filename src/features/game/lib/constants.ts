@@ -182,7 +182,7 @@ export const INITIAL_FARM: GameState = {
 };
 
 export const EMPTY: GameState = {
-  balance: new Decimal(100),
+  balance: new Decimal(50),
   fields: {},
   flowers: INITIAL_FLOWERS,
   hiveCells: INITIAL_CELLS,

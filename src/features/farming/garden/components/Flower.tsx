@@ -6,8 +6,13 @@ import Spritesheet, {
 
 import Decimal from "decimal.js-light";
 
-import flowerSheet from "assets/resources/flower/Flower_harvest.png";
+import flowerSheetRed from "assets/resources/flower/Flower_harvest_red.png";
 import flowerSheetWhite from "assets/resources/flower/Flower_harvest_white.png";
+import flowerSheetBlue from "assets/resources/flower//Flower_harvest_blue.png";
+import flowerSheetPurple from "assets/resources/flower/Flower_harvest_blue.png";
+import flowerSheetBlack from "assets/resources/flower/Flower_harvest_black.png";
+import flowerSheetGold from "assets/resources/flower/Flower_harvest_gold.png";
+
 import honeySheet from "assets/resources/flower/Honey_sheet_Updated.png";
 import flowerStump from "assets/resources/flower/flower_stump.png";
 import bee from "assets/animals/bees/bee.png";
@@ -34,6 +39,15 @@ import { TimeLeftPanel } from "components/ui/TimeLeftPanel";
 import { Reward } from "features/game/types/game";
 
 import { FlowerReward } from "./FlowerReward";
+
+const flowerColors = {
+  "White Flower": flowerSheetWhite,
+  "Red Flower": flowerSheetRed,
+  "Purple Flower": flowerSheetPurple,
+  "Blue Flower": flowerSheetBlue,
+  "Black Flower": flowerSheetBlack,
+  "Gold Flower": flowerSheetGold,
+};
 
 const POPOVER_TIME_MS = 1000;
 const HITS = 3;
@@ -241,9 +255,7 @@ export const Flower: React.FC<Props> = ({ flowerIndex }) => {
             getInstance={(spritesheet) => {
               shakeGif.current = spritesheet;
             }}
-            image={
-              flower.name == "White Flower" ? flowerSheetWhite : flowerSheet
-            }
+            image={flowerColors[flower.name]}
             widthFrame={266}
             heightFrame={168}
             fps={24}
