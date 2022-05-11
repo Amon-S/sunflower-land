@@ -23,18 +23,67 @@ const FlowerList: FlowerName[] = [
   "Gold Flower",
 ];
 
+type rarity = {
+  name: FlowerName;
+  chance: number;
+};
+
+const rarities: rarity[] = [
+  {
+    name: "White Flower",
+    chance: 59,
+  },
+  {
+    name: "Red Flower",
+    chance: 20,
+  },
+  {
+    name: "Purple Flower",
+    chance: 10,
+  },
+  {
+    name: "Blue Flower",
+    chance: 5,
+  },
+  {
+    name: "Black Flower",
+    chance: 3,
+  },
+  {
+    name: "Gold Flower",
+    chance: 2,
+  },
+];
 const getRandomFlower = (): FlowerName => {
-  const randomNum = Math.floor(Math.random() * FlowerList.length);
-  return FlowerList[randomNum];
+  // Calculate chances for common
+  const filler =
+    100 - rarities.map((r) => r.chance).reduce((sum, current) => sum + current);
+
+  if (filler <= 0) {
+    console.log("chances sum is higher than 100!");
+    return "White Flower";
+  }
+
+  // Create an array of 100 elements, based on the chances field
+  const probability = rarities
+    .map((r, i) => Array(r.chance === 0 ? filler : r.chance).fill(i))
+    .reduce((c, v) => c.concat(v), []);
+
+  // Pick one
+  const pIndex = Math.floor(Math.random() * 100);
+  const rarity = rarities[probability[pIndex]];
+  const rarityName = rarity.name;
+
+  return rarityName;
 };
 
 export const COOLDOWN_LIST = {
-  "White Flower": 5,
-  "Red Flower": 10,
-  "Purple Flower": 15,
-  "Blue Flower": 20,
-  "Black Flower": 25,
-  "Gold Flower": 30,
+  "White Flower": 24,
+  "Red Flower": 48,
+  "Purple Flower": 72,
+  "Blue Flower": 96,
+  "Black Flower": 192,
+  "Gold Flower": 384,
 };
 
 export function canPollinate(flower: Flower, now: number = Date.now()) {
@@ -60,16 +109,41 @@ export function getRequiredBeeAmount(
   inventory: Inventory,
   flowerName: FlowerName
 ) {
-  if (flowerName != "White Flower") {
-    return new Decimal(2);
+  switch (flowerName) {
+    case "Red Flower":
+      return new Decimal(2);
+      break;
+    case "Purple Flower":
+      return new Decimal(4);
+      break;
+    case "Blue Flower":
+      return new Decimal(8);
+      break;
+    case "Black Flower":
+      return new Decimal(16);
+      break;
+    case "Gold Flower":
+      return new Decimal(32);
   }
-
   return new Decimal(1);
 }
 
 export function getGivenPollen(flower: FlowerName) {
-  if (flower != "White Flower") {
-    return new Decimal(5);
+  switch (flower) {
+    case "Red Flower":
+      return new Decimal(5);
+      break;
+    case "Purple Flower":
+      return new Decimal(10);
+      break;
+    case "Blue Flower":
+      return new Decimal(20);
+      break;
+    case "Black Flower":
+      return new Decimal(50);
+      break;
+    case "Gold Flower":
+      return new Decimal(80);
   }
   return new Decimal(1);
 }
